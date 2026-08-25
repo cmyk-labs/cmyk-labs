@@ -25,12 +25,15 @@ lab = {
 }
 ```
 
-### Current vectors
+### Open-source contributions
 
-| `01 / REASON` | `02 / ORCHESTRATE` | `03 / LEARN` | `04 / BUILD` |
-|:--|:--|:--|:--|
-| LLM systems | Autonomous agents | Deep learning | Python tooling |
-| Context & memory | Multi-agent workflows | Model behavior | Open-source systems |
+#### [LoopX](https://github.com/huangruiteng/loopx)
+
+- **[#3554 — Promote durable runtime milestones](https://github.com/huangruiteng/loopx/pull/3554)** · `codex/periodic-report-runtime-hook` · **Merged**  
+  Adds a provider-neutral runtime producer that turns durable completion and replanning events into automatic periodic-report milestone triggers.
+
+- **[#3527 — Add bounded segment milestone trigger](https://github.com/huangruiteng/loopx/pull/3527)** · `feature/issue-3479-bounded-segment` · **Merged**  
+  Adds a validated reporting trigger for completed or replanned bounded work segments, with durable-writeback and public-data safeguards.
 
 ### Lab stack
 
