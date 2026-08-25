@@ -29,11 +29,17 @@ lab = {
 
 #### [LoopX](https://github.com/huangruiteng/loopx)
 
-- **[#3554 — Promote durable runtime milestones](https://github.com/huangruiteng/loopx/pull/3554)** · `codex/periodic-report-runtime-hook` · **Merged**  
-  Adds a provider-neutral runtime producer that turns durable completion and replanning events into automatic periodic-report milestone triggers.
+> Designed and shipped the milestone-reporting path that lets long-running AI agents turn durable execution progress into trustworthy, automated reports — without coupling the runtime to any model provider or delivery channel.
 
-- **[#3527 — Add bounded segment milestone trigger](https://github.com/huangruiteng/loopx/pull/3527)** · `feature/issue-3479-bounded-segment` · **Merged**  
-  Adds a validated reporting trigger for completed or replanned bounded work segments, with durable-writeback and public-data safeguards.
+**[#3554 — Promote durable runtime milestones](https://github.com/huangruiteng/loopx/pull/3554)**<br />
+`codex/periodic-report-runtime-hook` · **Merged** · `122 tests passed`
+
+Delivered the runtime automation layer that closes the gap between low-level agent events and high-level progress reporting. The new provider-neutral producer consumes bounded, durable, public-safe event windows and automatically promotes meaningful completion thresholds or autonomous replanning events into reportable milestones. It also introduces a dedicated CLI evaluation path, preserves aggregation identity across composed runs, and maintains strict separation between decision logic, model providers, renderers, and external side effects.
+
+**[#3527 — Add bounded segment milestone trigger](https://github.com/huangruiteng/loopx/pull/3527)**<br />
+`feature/issue-3479-bounded-segment` · **Merged** · `117 tests passed`
+
+Introduced the foundational `bounded_segment_milestone` capability for LoopX's periodic-report system. This makes substantial progress reportable at real execution boundaries — such as completing a bounded work segment or entering replanning — even while a long-running goal still has unfinished tasks. The implementation enforces validated transitions, durable writeback, materiality rules, public-data safeguards, deterministic priority, and native weekly-report integration, giving autonomous agents a robust mechanism for communicating progress before final goal completion.
 
 ### Lab stack
 
