@@ -6,9 +6,40 @@
     </pattern>
     <linearGradient id="edge" x1="0" y1="0" x2="1200" y2="460" gradientUnits="userSpaceOnUse">
       <stop stop-color="#00EFFF" />
-      <stop offset="0.52" stop-color="#7C5CFF" />
-      <stop offset="1" stop-color="#FF39C6" />
+      <stop offset="0.22" stop-color="#5B8CFF" />
+      <stop offset="0.42" stop-color="#7C5CFF" />
+      <stop offset="0.62" stop-color="#FF39C6" />
+      <stop offset="0.82" stop-color="#FF7A00" />
+      <stop offset="1" stop-color="#F0FF5A" />
     </linearGradient>
+    <linearGradient id="spectrum" x1="650" y1="36" x2="1090" y2="390" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00EFFF" />
+      <stop offset="0.2" stop-color="#5B8CFF" />
+      <stop offset="0.4" stop-color="#9B6CFF" />
+      <stop offset="0.58" stop-color="#FF39C6" />
+      <stop offset="0.76" stop-color="#FF7A00" />
+      <stop offset="0.9" stop-color="#F0FF5A" />
+      <stop offset="1" stop-color="#3AFFA3" />
+    </linearGradient>
+    <radialGradient id="auroraC" cx="0" cy="0" r="1" gradientTransform="translate(675 68) rotate(36) scale(360 230)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00EFFF" stop-opacity="0.14" />
+      <stop offset="1" stop-color="#00EFFF" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="auroraM" cx="0" cy="0" r="1" gradientTransform="translate(1060 245) rotate(150) scale(350 230)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF39C6" stop-opacity="0.13" />
+      <stop offset="1" stop-color="#FF39C6" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="auroraY" cx="0" cy="0" r="1" gradientTransform="translate(820 430) rotate(-78) scale(310 185)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFB800" stop-opacity="0.12" />
+      <stop offset="1" stop-color="#FFB800" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="coreSpectrum">
+      <stop stop-color="#EEF8FF" />
+      <stop offset="0.3" stop-color="#BDEEFF" />
+      <stop offset="0.58" stop-color="#9B6CFF" />
+      <stop offset="0.8" stop-color="#FF39C6" />
+      <stop offset="1" stop-color="#FFB800" />
+    </radialGradient>
     <radialGradient id="coreGlow">
       <stop stop-color="#EEF8FF" stop-opacity="0.24" />
       <stop offset="0.35" stop-color="#00EFFF" stop-opacity="0.11" />
@@ -26,6 +57,10 @@
       .orbit-c { transform-origin: 865px 210px; animation: spin 20s linear infinite; }
       .orbit-m { transform-origin: 865px 210px; animation: spinBack 14s linear infinite; }
       .orbit-y { transform-origin: 865px 210px; animation: spin 10s linear infinite; }
+      .orbit-v { transform-origin: 865px 210px; animation: spinBack 26s linear infinite; }
+      .orbit-o { transform-origin: 865px 210px; animation: spin 17s linear infinite; }
+      .orbit-g { transform-origin: 865px 210px; animation: spinBack 9s linear infinite; }
+      .spectrum { transform-origin: 865px 210px; animation: spin 34s linear infinite; }
       .node { animation: nodePulse 3.2s ease-in-out infinite; }
       .node:nth-of-type(2) { animation-delay: -0.8s; }
       .node:nth-of-type(3) { animation-delay: -1.6s; }
@@ -34,6 +69,10 @@
       .ghost-c { animation: driftC 4.8s ease-in-out infinite; }
       .ghost-m { animation: driftM 4.8s ease-in-out infinite; }
       .cursor { animation: blink 1s steps(1) infinite; }
+      .spark { transform-box: fill-box; transform-origin: center; animation: spark 4s ease-in-out infinite; }
+      .spark:nth-child(2n) { animation-delay: -1.4s; }
+      .spark:nth-child(3n) { animation-delay: -2.7s; }
+      .prism { animation: prism 7s ease-in-out infinite; }
       @keyframes spin { to { transform: rotate(360deg); } }
       @keyframes spinBack { to { transform: rotate(-360deg); } }
       @keyframes nodePulse { 0%,100% { opacity:.42; } 50% { opacity:1; } }
@@ -41,6 +80,8 @@
       @keyframes driftC { 0%,100% { transform:translate(-4px,2px); } 50% { transform:translate(-8px,3px); } }
       @keyframes driftM { 0%,100% { transform:translate(5px,-2px); } 50% { transform:translate(10px,-4px); } }
       @keyframes blink { 0%,48% { opacity:1; } 49%,100% { opacity:0; } }
+      @keyframes spark { 0%,100% { opacity:.18; transform:scale(.65); } 50% { opacity:1; transform:scale(1.35); } }
+      @keyframes prism { 0%,100% { opacity:.22; } 50% { opacity:.7; } }
       @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
     </style>
   </defs>
@@ -49,6 +90,9 @@
   <rect x="0.5" y="0.5" width="1199" height="459" rx="13.5" stroke="url(#edge)" stroke-opacity="0.48" />
   <rect width="1200" height="460" rx="14" fill="url(#grid)" />
   <rect x="555" y="0" width="645" height="460" fill="url(#coreGlow)" />
+  <rect x="555" y="0" width="645" height="460" fill="url(#auroraC)" />
+  <rect x="555" y="0" width="645" height="460" fill="url(#auroraM)" />
+  <rect x="555" y="0" width="645" height="460" fill="url(#auroraY)" />
 
   <path d="M24 58V24H58" stroke="#00EFFF" />
   <path d="M24 58V24H58" stroke="#FF39C6" transform="translate(4 4)" />
@@ -78,6 +122,7 @@
   <text x="58" y="409" class="mono" fill="#718095" font-size="10" letter-spacing="2.2">RESEARCH → PROTOTYPE → SHIP → ITERATE</text>
 
   <g>
+    <circle class="spectrum" cx="865" cy="210" r="199" stroke="url(#spectrum)" stroke-width="2" stroke-linecap="round" stroke-dasharray="58 26 11 44 92 40 18 66" opacity="0.58" />
     <circle cx="865" cy="210" r="186" stroke="#BDEEFF" stroke-opacity="0.08" />
     <circle cx="865" cy="210" r="144" stroke="#BDEEFF" stroke-opacity="0.1" stroke-dasharray="2 8" />
     <path d="M659 210H1071M865 4V416" stroke="#BDEEFF" stroke-opacity="0.1" />
@@ -95,10 +140,34 @@
       <circle cx="865" cy="210" r="101" stroke="#F0FF5A" stroke-width="1.5" stroke-dasharray="246 389" />
       <circle class="node" cx="807" cy="127" r="4" fill="#F0FF5A" filter="url(#glow)" />
     </g>
+    <g class="orbit-v">
+      <circle cx="865" cy="210" r="178" stroke="#9B6CFF" stroke-width="1.3" stroke-dasharray="118 1000" />
+      <circle class="node" cx="965" cy="63" r="3.5" fill="#9B6CFF" filter="url(#glow)" />
+    </g>
+    <g class="orbit-o">
+      <circle cx="865" cy="210" r="117" stroke="#FF7A00" stroke-width="1.3" stroke-dasharray="92 643" />
+      <circle class="node" cx="969" cy="264" r="3.5" fill="#FF7A00" filter="url(#glow)" />
+    </g>
+    <g class="orbit-g">
+      <circle cx="865" cy="210" r="84" stroke="#3AFFA3" stroke-width="1.3" stroke-dasharray="72 456" />
+      <circle class="node" cx="806" cy="270" r="3.5" fill="#3AFFA3" filter="url(#glow)" />
+    </g>
     <circle cx="865" cy="210" r="67" fill="#05070B" stroke="#EEF8FF" stroke-opacity="0.26" />
-    <circle cx="865" cy="210" r="50" fill="#EEF8FF" />
+    <circle class="prism" cx="865" cy="210" r="55" fill="none" stroke="url(#spectrum)" stroke-width="3" opacity="0.7" filter="url(#glow)" />
+    <circle cx="865" cy="210" r="48" fill="url(#coreSpectrum)" />
     <text x="865" y="205" class="mono" fill="#05070B" font-size="13" font-weight="700" text-anchor="middle">AI</text>
     <text x="865" y="222" class="mono" fill="#05070B" font-size="10" font-weight="600" letter-spacing="2" text-anchor="middle">CORE</text>
+  </g>
+
+  <g filter="url(#glow)">
+    <circle class="spark" cx="626" cy="176" r="2.2" fill="#5B8CFF" />
+    <circle class="spark" cx="678" cy="299" r="2" fill="#3AFFA3" />
+    <circle class="spark" cx="739" cy="59" r="2.4" fill="#FF7A00" />
+    <circle class="spark" cx="776" cy="381" r="2" fill="#00EFFF" />
+    <circle class="spark" cx="939" cy="31" r="2.2" fill="#F0FF5A" />
+    <circle class="spark" cx="1055" cy="86" r="2" fill="#FF39C6" />
+    <circle class="spark" cx="1105" cy="246" r="2.4" fill="#9B6CFF" />
+    <circle class="spark" cx="981" cy="398" r="2" fill="#FF7A00" />
   </g>
 
   <g class="mono" font-size="10" letter-spacing="2">
@@ -111,9 +180,9 @@
     <rect x="1009" y="320" width="116" height="28" stroke="#F0FF5A" stroke-opacity="0.3" fill="#05070B" />
     <circle cx="1125" cy="348" r="3" fill="#F0FF5A" />
     <text x="1025" y="338" fill="#F0FF5A">D.LEARN</text>
-    <rect x="652" y="338" width="112" height="28" stroke="#EEF8FF" stroke-opacity="0.24" fill="#05070B" />
-    <circle cx="652" cy="366" r="3" fill="#EEF8FF" />
-    <text x="669" y="356" fill="#EEF8FF">PYTHON</text>
+    <rect x="652" y="338" width="112" height="28" stroke="#3AFFA3" stroke-opacity="0.34" fill="#05070B" />
+    <circle cx="652" cy="366" r="3" fill="#3AFFA3" />
+    <text x="669" y="356" fill="#3AFFA3">PYTHON</text>
   </g>
 
   <g class="mono" font-size="9" letter-spacing="1.5" fill="#718095">
@@ -123,5 +192,5 @@
     <text x="1070" y="128" fill="#EEF8FF">OPEN</text>
   </g>
 
-  <rect class="scan" x="0" y="0" width="1200" height="2" fill="#00EFFF" opacity="0.35" />
+  <rect class="scan" x="0" y="0" width="1200" height="2" fill="url(#edge)" opacity="0.52" />
 </svg>
