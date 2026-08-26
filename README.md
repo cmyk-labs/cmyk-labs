@@ -25,7 +25,7 @@
   <tr>
     <td valign="top">
       <a href="https://github.com/bytedance/deer-flow/stargazers"><img align="right" src="https://img.shields.io/github/stars/bytedance/deer-flow?style=flat-square&amp;label=Stars" alt="bytedance/deer-flow Stars" /></a>
-      <strong><a href="https://github.com/bytedance/deer-flow">bytedance/deer-flow</a></strong>
+      <a href="https://github.com/bytedance/deer-flow"><img align="absmiddle" width="28" height="28" src="https://avatars.githubusercontent.com/u/4158466?v=4" alt="bytedance avatar" /></a>&nbsp;<strong><a href="https://github.com/bytedance/deer-flow">bytedance/deer-flow</a></strong>
       <br />
       <sub>An open-source SuperAgent harness that researches, codes, and creates. It orchestrates sub-agents, memory, sandboxes, tools, and extensible skills to handle complex tasks spanning minutes to hours.</sub>
     </td>
@@ -45,7 +45,7 @@
   <tr>
     <td valign="top">
       <a href="https://github.com/huangruiteng/loopx/stargazers"><img align="right" src="https://img.shields.io/github/stars/huangruiteng/loopx?style=flat-square&amp;label=Stars" alt="huangruiteng/loopx Stars" /></a>
-      <strong><a href="https://github.com/huangruiteng/loopx">huangruiteng/loopx</a></strong>
+      <a href="https://github.com/huangruiteng/loopx"><img align="absmiddle" width="28" height="28" src="https://avatars.githubusercontent.com/u/14976749?v=4" alt="huangruiteng avatar" /></a>&nbsp;<strong><a href="https://github.com/huangruiteng/loopx">huangruiteng/loopx</a></strong>
       <br />
       <sub>An open, provider-neutral, stateful control plane for long-horizon agents, purpose-built for loop engineering. It runs atop any agent harness to provide durable state, semantic decision-making, governance, recovery, and human-agent collaboration.</sub>
     </td>

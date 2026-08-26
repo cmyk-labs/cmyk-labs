@@ -362,6 +362,12 @@ function starsBadge(repository, alignment = "") {
   return `<a href="${htmlEscape(repository.html_url)}/stargazers"><img${alignAttribute} src="https://img.shields.io/github/stars/${htmlEscape(repository.full_name)}?style=flat-square&amp;label=Stars" alt="${htmlEscape(repository.full_name)} Stars" /></a>`;
 }
 
+function repositoryAvatar(repository) {
+  const avatarUrl = repository.owner?.avatar_url;
+  if (!avatarUrl) return "";
+  return `<a href="${htmlEscape(repository.html_url)}"><img align="absmiddle" width="28" height="28" src="${htmlEscape(avatarUrl)}" alt="${htmlEscape(repository.owner.login)} avatar" /></a>&nbsp;`;
+}
+
 function renderProfileSummary(
   contributedStars,
   ownedStars,
@@ -423,7 +429,7 @@ function renderFeaturedProjects(config, ownedRepositories) {
     return [
       `<td width="${selected.length === 1 ? "100" : "50"}%" valign="top">`,
       `  ${starsBadge(data, "right")}`,
-      `  <strong><a href="${htmlEscape(data.html_url)}">${htmlEscape(data.full_name)}</a></strong>`,
+      `  ${repositoryAvatar(data)}<strong><a href="${htmlEscape(data.html_url)}">${htmlEscape(data.full_name)}</a></strong>`,
       "  <br />",
       `  ${htmlEscape(description)}`,
       language ? `  <br /><br /><sub>${language}</sub>` : "",
@@ -477,7 +483,7 @@ function renderFeaturedContributions(groups, summaryMaximumLength, projectIntrod
       "  <tr>",
       "    <td valign=\"top\">",
       `      ${starsBadge(repository, "right")}`,
-      `      <strong><a href="${htmlEscape(repository.html_url)}">${htmlEscape(repository.full_name)}</a></strong>`,
+      `      ${repositoryAvatar(repository)}<strong><a href="${htmlEscape(repository.html_url)}">${htmlEscape(repository.full_name)}</a></strong>`,
       "      <br />",
       `      <sub>${htmlEscape(description)}</sub>`,
       "    </td>",
