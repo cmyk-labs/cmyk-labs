@@ -1,8 +1,26 @@
 {
   "username": "cmyk-labs",
-  "minimumStarsToShow": 500,
+  "minimumContributedStarsToShow": 500,
+  "minimumOpenSourceStarsToShow": 0,
   "featuredContributionRepositoryLimit": 2,
-  "featuredPullRequestsPerRepository": 3,
+  "featuredPullRequestsPerRepository": 2,
   "pullRequestSummaryMaxLength": 360,
-  "featuredProjects": []
+  "featuredProjects": [],
+  "contributionPullRequests": [
+    {
+      "repository": "bytedance/deer-flow",
+      "number": 4937,
+      "featured": true
+    },
+    {
+      "repository": "huangruiteng/loopx",
+      "number": 3554,
+      "featured": true
+    },
+    {
+      "repository": "huangruiteng/loopx",
+      "number": 3527,
+      "featured": true
+    }
+  ]
 }
