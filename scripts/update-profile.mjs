@@ -44,6 +44,25 @@ function assertConfig(config) {
   }
 
   if (
+    config.contributionProjectIntroductions !== undefined &&
+    (typeof config.contributionProjectIntroductions !== "object" ||
+      Array.isArray(config.contributionProjectIntroductions) ||
+      config.contributionProjectIntroductions === null)
+  ) {
+    throw new Error("contributionProjectIntroductions must be an object");
+  }
+
+  for (const [repository, introduction] of Object.entries(
+    config.contributionProjectIntroductions ?? {},
+  )) {
+    if (!repository.includes("/") || typeof introduction !== "string") {
+      throw new Error(
+        "contributionProjectIntroductions must map owner/repository names to strings",
+      );
+    }
+  }
+
+  if (
     config.contributionPullRequests !== undefined &&
     !Array.isArray(config.contributionPullRequests)
   ) {
@@ -352,7 +371,7 @@ function renderProfileSummary(
   const badges = [];
   if (contributedStars >= minimumContributedStars) {
     badges.push(
-      `<img src="https://img.shields.io/badge/Contributed_Project_Stars-${formatStars(contributedStars)}-0969da?style=for-the-badge&amp;logo=github&amp;logoColor=white" alt="${formatStars(contributedStars)} contributed project Stars" />`,
+      `<img src="https://img.shields.io/badge/Contrib._Stars-${formatStars(contributedStars)}-0969da?style=for-the-badge&amp;logo=github&amp;logoColor=white" alt="${formatStars(contributedStars)} contributed project Stars" />`,
     );
   }
   if (ownedStars >= minimumOpenSourceStars) {
@@ -419,11 +438,23 @@ function renderFeaturedProjects(config, ownedRepositories) {
     .join("\n")}\n  </tr>\n</table>`;
 }
 
-function renderFeaturedContributions(groups, summaryMaximumLength) {
+function renderFeaturedContributions(groups, summaryMaximumLength, projectIntroductions) {
   if (!groups.length) return "";
 
+  const introductionsByRepository = new Map(
+    Object.entries(projectIntroductions).map(([repository, introduction]) => [
+      repository.toLowerCase(),
+      introduction,
+    ]),
+  );
+
   const cards = groups.map(({ repository, pullRequests }) => {
-    const description = truncateText(repository.description || "Open-source project.", 300);
+    const description = truncateText(
+      introductionsByRepository.get(repository.full_name.toLowerCase()) ||
+        repository.description ||
+        "Open-source project.",
+      300,
+    );
     const pullRequestBlocks = pullRequests.map((pullRequest, index) => {
       const status = pullRequestStatus(pullRequest);
       const summary = pullRequestSummary(
@@ -491,9 +522,14 @@ function renderMoreContributions(pullRequests, summaryMaximumLength) {
   ].join("\n");
 }
 
-function renderContributions(featuredGroups, morePullRequests, summaryMaximumLength) {
+function renderContributions(
+  featuredGroups,
+  morePullRequests,
+  summaryMaximumLength,
+  projectIntroductions,
+) {
   return [
-    renderFeaturedContributions(featuredGroups, summaryMaximumLength),
+    renderFeaturedContributions(featuredGroups, summaryMaximumLength, projectIntroductions),
     renderMoreContributions(morePullRequests, summaryMaximumLength),
   ]
     .filter(Boolean)
@@ -654,7 +690,12 @@ async function buildArtifacts() {
   const sections = {
     MY_PROJECTS: sectionDocument(renderFeaturedProjects(config, ownedRepositories)),
     CONTRIBUTIONS: sectionDocument(
-      renderContributions(featuredGroups, morePullRequests, summaryMaximumLength),
+      renderContributions(
+        featuredGroups,
+        morePullRequests,
+        summaryMaximumLength,
+        config.contributionProjectIntroductions ?? {},
+      ),
     ),
   };
 
