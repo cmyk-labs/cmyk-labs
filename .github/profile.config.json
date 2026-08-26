@@ -1,0 +1,8 @@
+{
+  "username": "cmyk-labs",
+  "minimumStarsToShow": 500,
+  "featuredContributionRepositoryLimit": 2,
+  "featuredPullRequestsPerRepository": 3,
+  "pullRequestSummaryMaxLength": 360,
+  "featuredProjects": []
+}
