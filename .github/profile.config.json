@@ -7,7 +7,7 @@
   "pullRequestSummaryMaxLength": 360,
   "featuredProjects": [],
   "contributionProjectIntroductions": {
-    "bytedance/deer-flow": "An open-source SuperAgent harness that researches, codes, and creates. It orchestrates sub-agents, memory, sandboxes, tools, and extensible skills to handle complex tasks spanning minutes to hours.",
+    "bytedance/deer-flow": "An open-source SuperAgent harness that researches, codes, and creates. With the help of sandboxes, memories, tools, skills and subagents, it handles different levels of tasks that could take minutes to hours.",
     "huangruiteng/loopx": "An open, provider-neutral, stateful control plane for long-horizon agents, purpose-built for loop engineering. It runs atop any agent harness to provide durable state, semantic decision-making, governance, recovery, and human-agent collaboration."
   },
   "contributionPullRequests": [
