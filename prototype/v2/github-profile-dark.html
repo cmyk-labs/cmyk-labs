@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>cmyk-labs README prototype v2 · Dark</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --canvas: #ffffff;
+        --text: #1f2328;
+        --muted: #59636e;
+        --border: #d0d7de;
+        --link: #0969da;
+      }
+
+      html[data-theme="dark"] {
+        color-scheme: dark;
+        --canvas: #0d1117;
+        --text: #f0f6fc;
+        --muted: #9198a1;
+        --border: #30363d;
+        --link: #4493f8;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--canvas);
+        color: var(--text);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.5;
+      }
+
+      .markdown-body {
+        width: min(100%, 900px);
+        margin: 0 auto;
+        padding: 24px;
+        font-size: 16px;
+        overflow-wrap: break-word;
+      }
+
+      a {
+        color: var(--link);
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .hero {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      .center {
+        text-align: center;
+      }
+
+      .intro {
+        margin: 16px 0;
+      }
+
+      .metrics {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin: 16px 0;
+      }
+
+      .metrics img {
+        display: block;
+        height: 30px;
+        max-width: 100%;
+      }
+
+      h2 {
+        margin: 24px 0 16px;
+        padding-bottom: 0.3em;
+        border-bottom: 1px solid var(--border);
+        font-size: 1.5em;
+        line-height: 1.25;
+      }
+
+      table {
+        display: table;
+        width: 100%;
+        max-width: 100%;
+        border-spacing: 0;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 6px 13px;
+        border: 1px solid var(--border);
+      }
+
+      th {
+        font-weight: 600;
+        text-align: left;
+      }
+
+      code {
+        padding: 0.2em 0.4em;
+        border-radius: 6px;
+        background: color-mix(in srgb, var(--muted) 14%, transparent);
+        font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+        font-size: 85%;
+      }
+
+      .table-scroll {
+        width: 100%;
+        overflow-x: auto;
+      }
+
+      .more-contributions {
+        min-width: 760px;
+        font-size: 14px;
+      }
+
+      .more-contributions th:nth-child(4),
+      .more-contributions td:nth-child(4) {
+        text-align: center;
+      }
+
+      .more-contributions th:last-child,
+      .more-contributions td:last-child {
+        text-align: center;
+        white-space: nowrap;
+      }
+
+      .more-contributions td:last-child {
+        vertical-align: middle;
+      }
+
+      .repo-stars {
+        float: right;
+        display: inline-flex;
+        align-items: center;
+        margin-left: 12px;
+        margin-top: 3px;
+        line-height: 1;
+      }
+
+      .repo-stars img {
+        display: block;
+        height: 22px;
+      }
+
+      .stars-compact {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4em;
+        color: var(--text);
+        font-variant-numeric: tabular-nums;
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      .stars-compact:hover {
+        color: var(--link);
+        text-decoration: underline;
+      }
+
+      .stars-compact-icon {
+        font-size: 1.1em;
+        line-height: 1;
+      }
+
+      .repo-avatar,
+      .status-badge {
+        vertical-align: middle;
+      }
+
+      sub {
+        color: var(--muted);
+        font-size: 85%;
+        line-height: 1.45;
+      }
+
+      .profile-list {
+        margin: 0;
+        padding-left: 2em;
+      }
+
+      .profile-list li + li {
+        margin-top: 0.35em;
+      }
+
+      hr {
+        height: 0.25em;
+        margin: 24px 0;
+        padding: 0;
+        background: var(--border);
+        border: 0;
+      }
+
+      .footer {
+        margin-bottom: 0;
+      }
+
+      @media (max-width: 600px) {
+        .markdown-body {
+          padding: 16px;
+        }
+
+        .metrics img {
+          margin: 2px 0;
+        }
+
+        .repo-stars {
+          max-width: 46%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="markdown-body" aria-label="cmyk-labs GitHub profile README prototype v2 · Dark theme">
+      <img class="hero" src="../../assets/hero-animated-dark.svg" alt="cmyk-labs — Build intelligent agents. Ship useful tools." />
+
+      <p class="center intro">
+        Building reliable AI-agent infrastructure, developer tools, and production-grade open-source systems.
+      </p>
+
+      <p class="center metrics">
+        <img src="https://img.shields.io/badge/Contrib._Stars-86.2k-0969da?style=for-the-badge&amp;labelColor=3d444d&amp;logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI%2BPHBhdGggZmlsbD0iI2Y2ZDMyZCIgZD0ibTEyIDIuNSAyLjkgNS44OCA2LjQ5Ljk0LTQuNyA0LjU4IDEuMTEgNi40NkwxMiAxNy4zMWwtNS44IDMuMDUgMS4xMS02LjQ2LTQuNy00LjU4IDYuNDktLjk0TDEyIDIuNVoiLz48L3N2Zz4%3D" alt="⭐ 86.2k contributed project Stars" />
+        <img src="https://img.shields.io/badge/Open--source_Stars-13-1f883d?style=for-the-badge&amp;labelColor=3d444d&amp;logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI%2BPHBhdGggZmlsbD0iI2Y2ZDMyZCIgZD0ibTEyIDIuNSAyLjkgNS44OCA2LjQ5Ljk0LTQuNyA0LjU4IDEuMTEgNi40NkwxMiAxNy4zMWwtNS44IDMuMDUgMS4xMS02LjQ2LTQuNy00LjU4IDYuNDktLjk0TDEyIDIuNVoiLz48L3N2Zz4%3D" alt="⭐ 13 open-source Stars" />
+      </p>
+
+      <h2>🚀 About Me</h2>
+
+      <p>
+        I'm <strong>cmyk-labs</strong>, an open-source contributor focused on reliable AI-agent infrastructure, long-horizon runtimes, and developer tooling. I enjoy turning agent concepts—scoped tools, durable state, recovery, and human-agent collaboration—into maintainable systems that can handle real-world workloads.
+      </p>
+
+      <ul class="profile-list">
+        <li>🤖 Building reliable agent infrastructure, developer tools, and production-grade AI systems</li>
+        <li>🔧 Contributing to <a href="https://github.com/bytedance/deer-flow"><strong>bytedance/deer-flow</strong></a>, including user-scoped custom-agent dispatch through <code>task()</code></li>
+        <li>🧭 Contributing to <a href="https://github.com/huangruiteng/loopx"><strong>huangruiteng/loopx</strong></a>, advancing durable runtime milestones and bounded-segment reporting</li>
+        <li>🏆 Kaggle Bronze Medalist with national awards in data challenges and mathematical modeling</li>
+        <li>🌱 Open to AI-agent and LLM-infrastructure collaboration</li>
+      </ul>
+
+      <!-- Prototype-only virtual projects used to preview the conditional module. -->
+      <h2>📦 Open Source</h2>
+
+      <table>
+        <tr>
+          <td width="50%" valign="top">
+            <a class="repo-stars" href="#"><img src="https://img.shields.io/badge/Stars-328-0969da?style=flat-square&amp;labelColor=3d444d&amp;logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI%2BPHBhdGggZmlsbD0iI2Y2ZDMyZCIgZD0ibTEyIDIuNSAyLjkgNS44OCA2LjQ5Ljk0LTQuNyA0LjU4IDEuMTEgNi40NkwxMiAxNy4zMWwtNS44IDMuMDUgMS4xMS02LjQ2LTQuNy00LjU4IDYuNDktLjk0TDEyIDIuNVoiLz48L3N2Zz4%3D" alt="⭐ Stars 328" /></a>
+            <strong><a href="#">cmyk-labs/agent-runtime-lab</a></strong>
+            <br />
+            A durable agent runtime playground for scoped tools, resumable tasks and long-running workflows.
+            <br /><br /><sub><code>Python</code></sub>
+          </td>
+          <td width="50%" valign="top">
+            <!-- 64 Stars: badge intentionally hidden because the project is below the 200-Star threshold. -->
+            <strong><a href="#">cmyk-labs/adaptive-rag-toolkit</a></strong>
+            <br />
+            A practical retrieval toolkit for hybrid search, reranking and evidence-backed answers.
+            <br /><br /><sub><code>TypeScript</code></sub>
+          </td>
+        </tr>
+      </table>
+
+      <h2>✨ Featured Contributions</h2>
+
+      <table>
+        <tr>
+          <td valign="top">
+            <a class="repo-stars" href="https://github.com/bytedance/deer-flow/stargazers"><img src="https://img.shields.io/github/stars/bytedance/deer-flow?style=flat-square&amp;label=Stars&amp;labelColor=3d444d&amp;color=0969da&amp;logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI%2BPHBhdGggZmlsbD0iI2Y2ZDMyZCIgZD0ibTEyIDIuNSAyLjkgNS44OCA2LjQ5Ljk0LTQuNyA0LjU4IDEuMTEgNi40NkwxMiAxNy4zMWwtNS44IDMuMDUgMS4xMS02LjQ2LTQuNy00LjU4IDYuNDktLjk0TDEyIDIuNVoiLz48L3N2Zz4%3D" alt="⭐ Stars bytedance/deer-flow" /></a>
+            <a href="https://github.com/bytedance/deer-flow"><img class="repo-avatar" width="28" height="28" src="https://avatars.githubusercontent.com/u/4158466?v=4" alt="bytedance avatar" /></a>&nbsp;<strong><a href="https://github.com/bytedance/deer-flow">bytedance/deer-flow</a></strong>
+            <br />
+            <sub>An open-source SuperAgent harness that researches, codes, and creates. With the help of sandboxes, memories, tools, skills and subagents, it handles different levels of tasks that could take minutes to hours.</sub>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <img class="status-badge" src="https://img.shields.io/badge/-Open-1f883d?style=flat-square" alt="Open" />&nbsp; <strong><a href="https://github.com/bytedance/deer-flow/pull/4937">PR #4937</a> · Dispatch user-scoped custom agents via task()</strong>
+            <br />
+            <sub>Task(subagent_type=&quot;my-agent&quot;) now resolves user-scoped custom agents as a third registry tier: built-ins → operator-defined config.yaml subagents.custom_agents → the caller&#39;s own /api/agents agents. Later tiers never shadow earlier ones, so operator config stays authoritative.</sub>
+          </td>
+        </tr>
+      </table>
+
+      <br />
+
+      <table>
+        <tr>
+          <td valign="top">
+            <a class="repo-stars" href="https://github.com/huangruiteng/loopx/stargazers"><img src="https://img.shields.io/github/stars/huangruiteng/loopx?style=flat-square&amp;label=Stars&amp;labelColor=3d444d&amp;color=0969da&amp;logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI%2BPHBhdGggZmlsbD0iI2Y2ZDMyZCIgZD0ibTEyIDIuNSAyLjkgNS44OCA2LjQ5Ljk0LTQuNyA0LjU4IDEuMTEgNi40NkwxMiAxNy4zMWwtNS44IDMuMDUgMS4xMS02LjQ2LTQuNy00LjU4IDYuNDktLjk0TDEyIDIuNVoiLz48L3N2Zz4%3D" alt="⭐ Stars huangruiteng/loopx" /></a>
+            <a href="https://github.com/huangruiteng/loopx"><img class="repo-avatar" width="28" height="28" src="https://avatars.githubusercontent.com/u/14976749?v=4" alt="huangruiteng avatar" /></a>&nbsp;<strong><a href="https://github.com/huangruiteng/loopx">huangruiteng/loopx</a></strong>
+            <br />
+            <sub>An open, provider-neutral, stateful control plane for long-horizon agents, purpose-built for loop engineering. It runs atop any agent harness to provide durable state, semantic decision-making, governance, recovery, and human-agent collaboration.</sub>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <img class="status-badge" src="https://img.shields.io/badge/-Merged-8250df?style=flat-square" alt="Merged" />&nbsp; <strong><a href="https://github.com/huangruiteng/loopx/pull/3554">PR #3554</a> · Promote durable runtime milestones</strong>
+            <br />
+            <sub>Adds a provider-neutral runtime producer that consumes a bounded, durable rollout-event window. Promotes deduplicated todo_complete thresholds or durable autonomous_replan_recorded refreshes into the existing bounded_segment_milestone trigger path.</sub>
+            <br /><br />
+            <img class="status-badge" src="https://img.shields.io/badge/-Merged-8250df?style=flat-square" alt="Merged" />&nbsp; <strong><a href="https://github.com/huangruiteng/loopx/pull/3527">PR #3527</a> · Add bounded segment milestone trigger</strong>
+            <br />
+            <sub>Adds bounded_segment_milestone as a reportable periodic-report trigger. Requires a bounded segment reference and validated transition, with materiality gated on segment_completed or replan_entered plus durable writeback.</sub>
+          </td>
+        </tr>
+      </table>
+
+      <!-- Prototype-only virtual pull requests used to preview the conditional module. -->
+      <h2>🔗 More Contributions</h2>
+
+      <div class="table-scroll">
+        <table class="more-contributions">
+          <thead>
+            <tr>
+              <th>Repository</th>
+              <th>Pull request</th>
+              <th>Summary</th>
+              <th>Status</th>
+              <th>Stars</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a href="#">demo/agent-runtime</a></td>
+              <td><a href="#">#128 · Improve scoped tool routing</a></td>
+              <td>Routes tool calls through the correct user-scoped agent while preserving tool restrictions.</td>
+              <td><code>Merged</code></td>
+              <td><a class="stars-compact" href="#" aria-label="12.8k Stars"><span class="stars-compact-icon" aria-hidden="true">⭐</span><span>12.8k</span></a></td>
+            </tr>
+            <tr>
+              <td><a href="#">demo/rag-engine</a></td>
+              <td><a href="#">#86 · Add resumable ingestion checkpoints</a></td>
+              <td>Persists bounded ingestion progress so interrupted document pipelines can resume safely.</td>
+              <td><code>Open</code></td>
+              <td><a class="stars-compact" href="#" aria-label="8.2k Stars"><span class="stars-compact-icon" aria-hidden="true">⭐</span><span>8.2k</span></a></td>
+            </tr>
+            <tr>
+              <td><a href="#">demo/model-gateway</a></td>
+              <td><a href="#">#42 · Document provider fallback contract</a></td>
+              <td>Clarifies provider fallback behavior and adds practical integration examples.</td>
+              <td><code>Closed</code></td>
+              <td><a class="stars-compact" href="#" aria-label="2.4k Stars"><span class="stars-compact-icon" aria-hidden="true">⭐</span><span>2.4k</span></a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>🏆 Honors</h2>
+
+      <ul class="profile-list">
+        <li>🥉 Kaggle Bronze Medal</li>
+        <li>🥇 National Data Challenge — Graduate Division, National First Prize</li>
+        <li>🏅 China Postgraduate Mathematical Contest in Modeling — National Third Prize</li>
+        <li>📜 Two registered software copyrights for AI and data applications</li>
+      </ul>
+
+      <h2>📫 Contact</h2>
+
+      <ul class="profile-list">
+        <li>GitHub — <a href="https://github.com/cmyk-labs">@cmyk-labs</a></li>
+        <li>Technical Blog — CSDN</li>
+      </ul>
+
+      <hr />
+
+      <p class="center footer">
+        <sub>Visuals adapt to your GitHub theme, while repository stars, pull request statuses, rankings, and summaries refresh automatically.</sub>
+      </p>
+    </main>
+  </body>
+</html>
