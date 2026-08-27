@@ -30,7 +30,7 @@
     <td>
       <img align="absmiddle" src="https://img.shields.io/badge/-Open-1f883d?style=flat-square" alt="Open" />&nbsp; <strong><a href="https://github.com/bytedance/deer-flow/pull/4937">PR #4937</a> · Dispatch user-scoped custom agents via task()</strong>
       <br />
-      <sub>Task(subagent_type=&quot;my-agent&quot;) now resolves user-scoped custom agents as a third registry tier: built-ins → operator-defined config.yaml subagents.custom_agents → the caller&#39;s own /api/agents agents. Later tiers never shadow earlier ones, so operator config stays authoritative.</sub>
+      <sub>Connected DeerFlow&#39;s in-app Custom Agents with its subagent dispatch system, enabling the lead agent to dynamically discover and delegate tasks to specialized roles created by users based on the task, without introducing a fixed multi-agent orchestration graph. Established tiered resolution and precedence protection for built-in roles, operator configuration, administrator-defined roles, and user roles; strictly isolated different users; inherited role settings, tool permissions, skills, and model selection during delegation; and prevented subagents from delegating again.</sub>
     </td>
   </tr>
 </table>

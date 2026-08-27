@@ -505,6 +505,11 @@ function pullRequestSummary(body, title, maximumLength) {
   return selected.join(" ");
 }
 
+function pullRequestDisplaySummary(pullRequest, maximumLength) {
+  if (pullRequest.configuredSummary) return pullRequest.configuredSummary;
+  return pullRequestSummary(pullRequest.body, pullRequest.title, maximumLength);
+}
+
 function pullRequestStatus(pullRequest) {
   if (pullRequest.merged_at) return { label: "Merged", color: "8250df" };
   if (pullRequest.draft) return { label: "Draft", color: "6e7781" };
@@ -628,11 +633,7 @@ function renderCollapsedPullRequests(pullRequests, summaryMaximumLength) {
   if (!pullRequests.length) return "";
 
   const rows = pullRequests.map((pullRequest) => {
-    const summary = pullRequestSummary(
-      pullRequest.configuredSummary || pullRequest.body,
-      pullRequest.title,
-      summaryMaximumLength,
-    );
+    const summary = pullRequestDisplaySummary(pullRequest, summaryMaximumLength);
     return `| [#${pullRequest.number} · ${markdownCell(cleanTitle(pullRequest.title))}](${pullRequest.html_url}) | ${markdownCell(summary)} | <code>${pullRequestStatus(pullRequest).label}</code> |`;
   });
 
@@ -664,11 +665,7 @@ function renderFeaturedContributions(
     const collapsedPullRequests = pullRequests.slice(expandedPullRequestLimit);
     const pullRequestBlocks = expandedPullRequests.map((pullRequest, index) => {
       const status = pullRequestStatus(pullRequest);
-      const summary = pullRequestSummary(
-        pullRequest.configuredSummary || pullRequest.body,
-        pullRequest.title,
-        summaryMaximumLength,
-      );
+      const summary = pullRequestDisplaySummary(pullRequest, summaryMaximumLength);
       return [
         index ? "      <br /><br />" : "",
         `      ${statusBadge(status)}&nbsp; <strong><a href="${htmlEscape(pullRequest.html_url)}">PR #${pullRequest.number}</a> · ${htmlEscape(cleanTitle(pullRequest.title))}</strong>`,
@@ -714,11 +711,7 @@ function renderMoreContributions(pullRequests, summaryMaximumLength) {
 
   const rows = pullRequests.map(({ repository, pullRequest }) => {
     const status = pullRequestStatus(pullRequest).label;
-    const summary = pullRequestSummary(
-      pullRequest.configuredSummary || pullRequest.body,
-      pullRequest.title,
-      summaryMaximumLength,
-    );
+    const summary = pullRequestDisplaySummary(pullRequest, summaryMaximumLength);
     return [
       `[${markdownCell(repository.full_name)}](${repository.html_url})`,
       `[#${pullRequest.number} · ${markdownCell(cleanTitle(pullRequest.title))}](${pullRequest.html_url})`,
