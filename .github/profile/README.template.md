@@ -6,16 +6,6 @@
   <img src="./assets/hero-animated-light.svg" width="100%" alt="cmyk-labs — Build intelligent agents. Ship useful tools." />
 </picture>
 
-<details>
-  <summary><strong>🏄 Surfing mode</strong></summary>
-  <br />
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="./assets/hero-surfing.svg" />
-    <source media="(prefers-color-scheme: light)" srcset="./assets/hero-animated-light.svg" />
-    <img src="./assets/hero-animated-light.svg" width="100%" alt="cmyk-labs surfing hero" />
-  </picture>
-</details>
-
 <p align="center">
   Building reliable AI-agent infrastructure, developer tools, and production-grade open-source systems.
 </p>
