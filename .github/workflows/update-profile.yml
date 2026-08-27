@@ -10,6 +10,7 @@ on:
     paths:
       - ".github/profile.config.json"
       - ".github/profile/README.template.md"
+      - ".github/profile/sections/**"
       - ".github/workflows/update-profile.yml"
       - "scripts/update-profile.mjs"
 
@@ -43,13 +44,13 @@ jobs:
       - name: Commit updated profile
         shell: bash
         run: |
-          if git diff --quiet -- README.md .github/profile/sections; then
-            echo "README.md and profile sections are already current."
+          if git diff --quiet -- README.md; then
+            echo "README.md is already current."
             exit 0
           fi
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add README.md .github/profile/sections
+          git add README.md
           git commit -m "chore: refresh profile data"
           git push
