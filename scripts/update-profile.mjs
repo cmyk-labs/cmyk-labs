@@ -176,6 +176,30 @@ function parsePullRequestNumbers(value, context) {
   return [...new Set(numbers)];
 }
 
+function parsePullRequestSummaries(value, context, pullRequestNumbers) {
+  const summaries = new Map();
+  const source = String(value ?? "").trim();
+  if (!source) return summaries;
+
+  for (const entry of source.split(/<br\s*\/?>/i).map((item) => item.trim()).filter(Boolean)) {
+    const match = entry.match(/^#?(\d+)\s*:\s*(.+)$/);
+    if (!match) {
+      throw new Error(`${context} PR Summaries must use "PR number: summary" entries separated by <br />`);
+    }
+    const number = Number(match[1]);
+    const summary = match[2].trim();
+    if (!pullRequestNumbers.includes(number)) {
+      throw new Error(`${context} PR Summary #${number} must also be listed in Pull Requests`);
+    }
+    if (summaries.has(number)) {
+      throw new Error(`${context} contains duplicate PR Summary #${number}`);
+    }
+    summaries.set(number, summary);
+  }
+
+  return summaries;
+}
+
 function parseContributionEntries(source) {
   const entries = parseMarkdownTable(
     source,
@@ -185,11 +209,17 @@ function parseContributionEntries(source) {
     const context = `contributions.md row ${index + 3}`;
     const repository = row.repository.trim();
     assertRepositoryName(repository, context);
+    const pullRequestNumbers = parsePullRequestNumbers(row.pullrequests, context);
     return {
       repository,
       featured: parseFeatured(row.featured, context),
       introduction: row.introduction.trim(),
-      pullRequestNumbers: parsePullRequestNumbers(row.pullrequests, context),
+      pullRequestNumbers,
+      pullRequestSummaries: parsePullRequestSummaries(
+        row.prsummaries,
+        context,
+        pullRequestNumbers,
+      ),
     };
   });
   assertUniqueRepositories(entries, "contributions.md");
@@ -599,7 +629,7 @@ function renderCollapsedPullRequests(pullRequests, summaryMaximumLength) {
 
   const rows = pullRequests.map((pullRequest) => {
     const summary = pullRequestSummary(
-      pullRequest.body,
+      pullRequest.configuredSummary || pullRequest.body,
       pullRequest.title,
       summaryMaximumLength,
     );
@@ -635,7 +665,7 @@ function renderFeaturedContributions(
     const pullRequestBlocks = expandedPullRequests.map((pullRequest, index) => {
       const status = pullRequestStatus(pullRequest);
       const summary = pullRequestSummary(
-        pullRequest.body,
+        pullRequest.configuredSummary || pullRequest.body,
         pullRequest.title,
         summaryMaximumLength,
       );
@@ -685,7 +715,7 @@ function renderMoreContributions(pullRequests, summaryMaximumLength) {
   const rows = pullRequests.map(({ repository, pullRequest }) => {
     const status = pullRequestStatus(pullRequest).label;
     const summary = pullRequestSummary(
-      pullRequest.body,
+      pullRequest.configuredSummary || pullRequest.body,
       pullRequest.title,
       summaryMaximumLength,
     );
@@ -783,6 +813,13 @@ function prioritizeConfiguredPullRequests(pullRequests, configuredNumbers) {
   });
 }
 
+function applyConfiguredPullRequestSummaries(pullRequests, configuredSummaries) {
+  return pullRequests.map((pullRequest) => {
+    const configuredSummary = configuredSummaries?.get(pullRequest.number);
+    return configuredSummary ? { ...pullRequest, configuredSummary } : pullRequest;
+  });
+}
+
 function splitContributions(contributionGroups, configuredRepositories) {
   const configurationByRepository = new Map(
     configuredRepositories.map((entry) => [entry.repository.toLowerCase(), entry]),
@@ -801,6 +838,10 @@ function splitContributions(contributionGroups, configuredRepositories) {
   const morePullRequests = [];
   for (const { repository, pullRequests } of contributionGroups) {
     const configuration = configurationByRepository.get(repository.full_name.toLowerCase());
+    const configuredPullRequests = applyConfiguredPullRequestSummaries(
+      pullRequests,
+      configuration?.pullRequestSummaries,
+    );
     if (configuration?.featured) {
       const availableNumbers = new Set(pullRequests.map(({ number }) => number));
       for (const number of configuration.pullRequestNumbers) {
@@ -812,7 +853,7 @@ function splitContributions(contributionGroups, configuredRepositories) {
         repository,
         introduction: configuration.introduction,
         pullRequests: prioritizeConfiguredPullRequests(
-          pullRequests,
+          configuredPullRequests,
           configuration.pullRequestNumbers,
         ),
       });
@@ -820,7 +861,7 @@ function splitContributions(contributionGroups, configuredRepositories) {
     }
 
     morePullRequests.push(
-      ...pullRequests.map((pullRequest) => ({ repository, pullRequest })),
+      ...configuredPullRequests.map((pullRequest) => ({ repository, pullRequest })),
     );
   }
 

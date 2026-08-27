@@ -48,13 +48,13 @@
   </tr>
   <tr>
     <td>
-      <img align="absmiddle" src="https://img.shields.io/badge/-Merged-8250df?style=flat-square" alt="Merged" />&nbsp; <strong><a href="https://github.com/huangruiteng/loopx/pull/3554">PR #3554</a> · Promote durable runtime milestones</strong>
-      <br />
-      <sub>Adds a provider-neutral runtime producer that consumes a bounded, durable rollout-event window. Promotes deduplicated todo_complete thresholds or durable autonomous_replan_recorded refreshes into the existing bounded_segment_milestone trigger path.</sub>
-      <br /><br />
       <img align="absmiddle" src="https://img.shields.io/badge/-Merged-8250df?style=flat-square" alt="Merged" />&nbsp; <strong><a href="https://github.com/huangruiteng/loopx/pull/3527">PR #3527</a> · Add bounded segment milestone trigger</strong>
       <br />
-      <sub>Adds bounded_segment_milestone as a reportable periodic-report trigger. Requires a bounded segment reference and validated transition, with materiality gated on segment_completed or replan_entered plus durable writeback.</sub>
+      <sub>Designed and delivered a stage-milestone trigger that lets long-horizon AI agents produce trustworthy progress reports when a stage completes or replanning begins, even with unfinished tasks. It validates stage state and durable results, unifies materiality, priority, cooldown, and event coalescing, and integrates with weekly reporting.</sub>
+      <br /><br />
+      <img align="absmiddle" src="https://img.shields.io/badge/-Merged-8250df?style=flat-square" alt="Merged" />&nbsp; <strong><a href="https://github.com/huangruiteng/loopx/pull/3554">PR #3554</a> · Promote durable runtime milestones</strong>
+      <br />
+      <sub>Built a provider-neutral, side-effect-free processor that turns validated, deduplicated task completions and autonomous replans from durable event windows into reportable milestones. Adds a CLI evaluation path, preserves consistency across composed runs, and—with #3527—connects durable events to report decisions while isolating rendering and external writes.</sub>
     </td>
   </tr>
 </table>

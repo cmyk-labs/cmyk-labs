@@ -34,17 +34,19 @@
 
 4. `Featured` 为 `false`、留空或没有配置的项目进入 More Contributions，并按照项目 Stars 从高到低排序。
 
-5. 非精选项目内的 PR 按更新时间从新到旧排列；PR 状态、标题、摘要、头像和 Stars 均自动获取。
+5. 非精选项目内的 PR 按更新时间从新到旧排列；PR 状态、标题、头像和 Stars 均自动获取，摘要默认从 PR 正文提取。
 
-6. 即使文件留空，API 查询到的未精选 PR 仍会自动显示在 More Contributions；没有任何有效 PR 时整个 Contributions 模块隐藏。
+6. 可选的 `PR Summaries` 用于覆盖指定 PR 的自动摘要，格式为 `PR编号: 英文摘要`；多个摘要使用 `<br />` 分隔，编号必须同时出现在 `Pull Requests` 中。
 
-7. `sections/contributions.md` 文件内容格式示例：
+7. 即使文件留空，API 查询到的未精选 PR 仍会自动显示在 More Contributions；没有任何有效 PR 时整个 Contributions 模块隐藏。
+
+8. `sections/contributions.md` 文件内容格式示例：
 
 ```md
-| Repository | Featured | Introduction | Pull Requests |
-|---|:---:|---|---|
-| bytedance/deer-flow | true | Optional project introduction | 4937 |
-| example/project | false | Optional project introduction | 128, 96 |
+| Repository | Featured | Introduction | Pull Requests | PR Summaries |
+|---|:---:|---|---|---|
+| bytedance/deer-flow | true | Optional project introduction | 4937 | 4937: Optional custom PR summary |
+| example/project | false | Optional project introduction | 128, 96 | |
 ```
 
 ## 🏆 Honors（`sections/honors.md`）
