@@ -15,6 +15,15 @@
   <img src="https://img.shields.io/badge/Open--source_Stars-13-1f883d?style=for-the-badge&amp;labelColor=3d444d&amp;logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI%2BPHBhdGggZmlsbD0iI2Y2ZDMyZCIgZD0ibTEyIDIuNSAyLjkgNS44OCA2LjQ5Ljk0LTQuNyA0LjU4IDEuMTEgNi40NkwxMiAxNy4zMWwtNS44IDMuMDUgMS4xMS02LjQ2LTQuNy00LjU4IDYuNDktLjk0TDEyIDIuNVoiLz48L3N2Zz4%3D" alt="13 open-source Stars" />
 </p>
 
+## 🚀 About Me
+
+I'm **cmyk-labs**, an open-source contributor focused on **AI agents and artificial intelligence algorithms**. I explore how to combine algorithms, models, and engineering approaches to transform artificial intelligence technologies into reliable, maintainable software systems that can solve real-world problems.
+
+- 🎓 Graduated in 2025 with a bachelor's degree, majoring in **Data Science and Big Data Technology** (Department of Big Data and Artificial Intelligence)
+- 🎯 Research areas: **AI agents and artificial intelligence algorithms**
+- 🛠️ Committed to the complete process from research and prototype validation to real-world system implementation
+- 🌱 Open to discussion and collaboration around AI agents, LLM infrastructure, and artificial intelligence algorithms
+
 ## ✨ Featured Contributions
 
 <table>
