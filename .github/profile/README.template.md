@@ -1,13 +1,15 @@
-<!-- README.md is generated from this template and .github/profile/sections/. -->
+<!-- Generated from .github/profile/README.template.md and .github/profile/sections/. -->
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./assets/hero-animated-dark.svg" />
   <source media="(prefers-color-scheme: light)" srcset="./assets/hero-animated-light.svg" />
-  <img src="./assets/hero-animated-light.svg" width="100%" alt="cmyk-labs — Build intelligent agents. Ship useful tools." />
+  <img src="./assets/hero-animated-light.svg" width="100%" alt="{{HERO_ALT}}" />
 </picture>
 
+{{LANGUAGE_SWITCH}}
+
 <p align="center">
-  Building reliable AI-agent infrastructure, developer tools, and production-grade open-source systems.
+  {{TAGLINE}}
 </p>
 
 {{PROFILE_SUMMARY}}
@@ -25,5 +27,16 @@
 ---
 
 <p align="center">
-  <sub>Visuals adapt to your GitHub theme, while repository stars, pull request statuses, rankings, and summaries refresh automatically.</sub>
+  <sub>{{FOOTER}}</sub>
 </p>
+
+<details>
+<summary>{{COMMIT_CONVENTION_TITLE}}</summary>
+
+{{COMMIT_CONVENTION}}
+
+```text
+docs(profile): clarify project introductions and PR contributions
+```
+
+</details>

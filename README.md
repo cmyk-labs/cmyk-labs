@@ -1,4 +1,4 @@
-<!-- README.md is generated from this template and .github/profile/sections/. -->
+<!-- Generated from .github/profile/README.template.md and .github/profile/sections/. -->
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./assets/hero-animated-dark.svg" />
@@ -7,23 +7,25 @@
 </picture>
 
 <p align="center">
-  Building reliable AI-agent infrastructure, developer tools, and production-grade open-source systems.
+  <strong>English</strong> · <a href="./README.zh-CN.md">简体中文</a>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Contrib._Stars-87.3k-0969da?style=for-the-badge&amp;labelColor=3d444d&amp;logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI%2BPHBhdGggZmlsbD0iI2Y2ZDMyZCIgZD0ibTEyIDIuNSAyLjkgNS44OCA2LjQ5Ljk0LTQuNyA0LjU4IDEuMTEgNi40NkwxMiAxNy4zMWwtNS44IDMuMDUgMS4xMS02LjQ2LTQuNy00LjU4IDYuNDktLjk0TDEyIDIuNVoiLz48L3N2Zz4%3D" alt="87.3k contributed project Stars" />
-  <img src="https://img.shields.io/badge/Open--source_Stars-16-1f883d?style=for-the-badge&amp;labelColor=3d444d&amp;logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI%2BPHBhdGggZmlsbD0iI2Y2ZDMyZCIgZD0ibTEyIDIuNSAyLjkgNS44OCA2LjQ5Ljk0LTQuNyA0LjU4IDEuMTEgNi40NkwxMiAxNy4zMWwtNS44IDMuMDUgMS4xMS02LjQ2LTQuNy00LjU4IDYuNDktLjk0TDEyIDIuNVoiLz48L3N2Zz4%3D" alt="16 open-source Stars" />
+  Open-source work on AI agents, LLM infrastructure, and AI algorithms.
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Contrib._Stars-87.3k-0969da?style=for-the-badge&amp;labelColor=3d444d&amp;logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI%2BPHBhdGggZmlsbD0iI2Y2ZDMyZCIgZD0ibTEyIDIuNSAyLjkgNS44OCA2LjQ5Ljk0LTQuNyA0LjU4IDEuMTEgNi40NkwxMiAxNy4zMWwtNS44IDMuMDUgMS4xMS02LjQ2LTQuNy00LjU4IDYuNDktLjk0TDEyIDIuNVoiLz48L3N2Zz4%3D" alt="87.3k Stars across unique contributed repositories" />
+  <img src="https://img.shields.io/badge/Own_Stars-16-1f883d?style=for-the-badge&amp;labelColor=3d444d&amp;logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI%2BPHBhdGggZmlsbD0iI2Y2ZDMyZCIgZD0ibTEyIDIuNSAyLjkgNS44OCA2LjQ5Ljk0LTQuNyA0LjU4IDEuMTEgNi40NkwxMiAxNy4zMWwtNS44IDMuMDUgMS4xMS02LjQ2LTQuNy00LjU4IDYuNDktLjk0TDEyIDIuNVoiLz48L3N2Zz4%3D" alt="16 Stars across owned public repositories" />
 </p>
 
 ## 🚀 About Me
 
-I'm **cmyk-labs**, an open-source contributor focused on **AI agents and AI algorithms**.
+I'm **cmyk-labs**, an open-source contributor exploring how AI capabilities can become useful, maintainable software.
 
-I explore **how to turn AI systems—especially those built with language models—into reliable software** by combining research, engineering practices, and agentic workflows. My goal is to transform AI capabilities into **practical, maintainable, and scalable solutions** for real-world problems.
-
-* 🎓 **Education**: B.Eng. (2021–2025) · Major in Data Science and Big Data Technology · Department of Big Data and Artificial Intelligence
-* 🎯 **Research Interests**: AI agents, LLM infrastructure, and AI algorithms
-- 🌱 **Collaboration**: Open to discussions and open-source collaboration in these areas
+- 🎓 **Education**: B.Eng. (2021–2025) · Major in Data Science and Big Data Technology · Department of Big Data and Artificial Intelligence
+- 🎯 **Research Interests**: AI agents, LLM infrastructure, and AI algorithms
+- 🌱 **Collaboration**: Open to technical discussions and open-source collaboration in these areas.
 
 ## ✨ Featured Contributions
 
@@ -72,5 +74,16 @@ I explore **how to turn AI systems—especially those built with language models
 ---
 
 <p align="center">
-  <sub>Visuals adapt to your GitHub theme, while repository stars, pull request statuses, rankings, and summaries refresh automatically.</sub>
+  <sub>Project stars and PR statuses are refreshed automatically.</sub>
 </p>
+
+<details>
+<summary>Commit convention</summary>
+
+All new commits, including automated updates, use `type(scope): summary`. Use a lowercase type and a required, nonempty lowercase scope, followed by a colon and one space. Write a concise English summary beginning with a verb in the base form, without a trailing period. See [AGENTS.md](./AGENTS.md) for types, scopes, and examples.
+
+```text
+docs(profile): clarify project introductions and PR contributions
+```
+
+</details>

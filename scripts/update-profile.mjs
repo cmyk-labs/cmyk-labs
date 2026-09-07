@@ -4,17 +4,62 @@ import process from "node:process";
 import { fileURLToPath } from "node:url";
 
 const rootDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const readmePath = path.join(rootDirectory, "README.md");
 const configPath = path.join(rootDirectory, ".github", "profile.config.json");
 const profileDirectory = path.join(rootDirectory, ".github", "profile");
 const templatePath = path.join(profileDirectory, "README.template.md");
 const sectionsDirectory = path.join(profileDirectory, "sections");
-const sectionSourcePaths = {
-  ABOUT_ME: path.join(sectionsDirectory, "about.md"),
-  OPEN_SOURCE: path.join(sectionsDirectory, "open-source.md"),
-  CONTRIBUTIONS: path.join(sectionsDirectory, "contributions.md"),
-  HONORS: path.join(sectionsDirectory, "honors.md"),
-  CONTACT: path.join(sectionsDirectory, "contact.md"),
+const sectionFileNames = {
+  ABOUT_ME: "about.md",
+  OPEN_SOURCE: "open-source.md",
+  CONTRIBUTIONS: "contributions.md",
+  HONORS: "honors.md",
+  CONTACT: "contact.md",
+};
+const locales = {
+  en: {
+    label: "English",
+    fileName: "README.md",
+    heroAlt: "cmyk-labs — Build intelligent agents. Ship useful tools.",
+    tagline: "Open-source work on AI agents, LLM infrastructure, and AI algorithms.",
+    footer: "Project stars and PR statuses are refreshed automatically.",
+    commitConventionTitle: "Commit convention",
+    commitConvention: "All new commits, including automated updates, use `type(scope): summary`. Use a lowercase type and a required, nonempty lowercase scope, followed by a colon and one space. Write a concise English summary beginning with a verb in the base form, without a trailing period. See [AGENTS.md](./AGENTS.md) for types, scopes, and examples.",
+    about: "🚀 About Me",
+    openSource: "📦 Open Source",
+    featuredContributions: "✨ Featured Contributions",
+    moreContributions: "🔗 More Contributions",
+    honors: "🏆 Honors",
+    contact: "📫 Contact",
+    projectDescription: "Open-source project.",
+    morePullRequests: "More pull requests ({count})",
+    repositoryColumn: "Repository",
+    pullRequestColumn: "Pull request",
+    summaryColumn: "Summary",
+    statusColumn: "Status",
+    statuses: { Open: "Open", Draft: "Draft", Merged: "Merged", Closed: "Closed" },
+  },
+  "zh-CN": {
+    label: "简体中文",
+    fileName: "README.zh-CN.md",
+    heroAlt: "cmyk-labs — 构建智能 Agent，交付实用工具。",
+    tagline: "围绕 AI Agent、LLM 基础设施和 AI 算法开展开源工作。",
+    footer: "项目 Stars 和 PR 状态自动更新。",
+    commitConventionTitle: "提交规范",
+    commitConvention: "所有新提交，包括自动更新，统一使用 `type(scope): summary`。类型和范围使用小写，范围必填且不能为空，冒号后恰好一个空格。摘要使用简洁英文，以动词原形开头，末尾不加句号。类型、范围和示例见 [AGENTS.zh-CN.md](./AGENTS.zh-CN.md)。",
+    about: "🚀 关于我",
+    openSource: "📦 开源项目",
+    featuredContributions: "✨ 精选开源贡献",
+    moreContributions: "🔗 更多开源贡献",
+    honors: "🏆 荣誉",
+    contact: "📫 联系方式",
+    projectDescription: "开源项目。",
+    morePullRequests: "更多 PR（{count}）",
+    repositoryColumn: "项目",
+    pullRequestColumn: "PR",
+    summaryColumn: "说明",
+    statusColumn: "状态",
+    statuses: { Open: "进行中", Draft: "草稿", Merged: "已合并", Closed: "已关闭" },
+  },
 };
 const apiRoot = "https://api.github.com";
 const token = process.env.GITHUB_TOKEN || process.env.GH_TOKEN || "";
@@ -176,7 +221,7 @@ function parsePullRequestNumbers(value, context) {
   return [...new Set(numbers)];
 }
 
-function parsePullRequestSummaries(value, context, pullRequestNumbers) {
+function parsePullRequestSummaries(value, context, pullRequestNumbers, column = "PR Summaries") {
   const summaries = new Map();
   const source = String(value ?? "").trim();
   if (!source) return summaries;
@@ -184,15 +229,18 @@ function parsePullRequestSummaries(value, context, pullRequestNumbers) {
   for (const entry of source.split(/<br\s*\/?>/i).map((item) => item.trim()).filter(Boolean)) {
     const match = entry.match(/^#?(\d+)\s*:\s*(.+)$/);
     if (!match) {
-      throw new Error(`${context} PR Summaries must use "PR number: summary" entries separated by <br />`);
+      throw new Error(`${context} ${column} must use "PR number: text" entries separated by <br />`);
     }
     const number = Number(match[1]);
     const summary = match[2].trim();
-    if (!pullRequestNumbers.includes(number)) {
+    if (!Number.isSafeInteger(number) || number <= 0) {
+      throw new Error(`${context} ${column} must use positive PR numbers`);
+    }
+    if (pullRequestNumbers && !pullRequestNumbers.includes(number)) {
       throw new Error(`${context} PR Summary #${number} must also be listed in Pull Requests`);
     }
     if (summaries.has(number)) {
-      throw new Error(`${context} contains duplicate PR Summary #${number}`);
+      throw new Error(`${context} contains duplicate ${column} entry #${number}`);
     }
     summaries.set(number, summary);
   }
@@ -224,6 +272,63 @@ function parseContributionEntries(source) {
   });
   assertUniqueRepositories(entries, "contributions.md");
   return entries;
+}
+
+function parseTranslatedRepositories(source, section, locale) {
+  const fileName = `${locale}/${section}.md`;
+  const requiredColumns = section === "open-source"
+    ? ["Repository", "Description"]
+    : ["Repository", "Introduction", "PR Summaries"];
+  const allowedColumns = new Set(
+    [...requiredColumns, ...(section === "contributions" ? ["PR Titles"] : [])]
+      .map(normalizedColumnName),
+  );
+  const entries = parseMarkdownTable(source, requiredColumns, fileName).map((row, index) => {
+    const context = `${fileName} row ${index + 3}`;
+    const unknownColumns = Object.keys(row).filter((name) => !allowedColumns.has(name));
+    if (unknownColumns.length) {
+      throw new Error(`${context} contains unsupported translation columns: ${unknownColumns.join(", ")}`);
+    }
+    const repository = row.repository.trim();
+    assertRepositoryName(repository, context);
+    return {
+      repository,
+      description: row.description?.trim() || "",
+      introduction: row.introduction?.trim() || "",
+      pullRequestSummaries: parsePullRequestSummaries(row.prsummaries, context, null),
+      pullRequestTitles: parsePullRequestSummaries(row.prtitles, context, null, "PR Titles"),
+    };
+  });
+  assertUniqueRepositories(entries, fileName);
+  return new Map(entries.map((entry) => [entry.repository.toLowerCase(), entry]));
+}
+
+function translateContributions({ featuredGroups, morePullRequests }, translations, copy) {
+  function translatePullRequest(repository, pullRequest) {
+    const translation = translations.get(repository.full_name.toLowerCase());
+    const summary = translation?.pullRequestSummaries.get(pullRequest.number);
+    if (!summary) return null;
+    return {
+      ...pullRequest,
+      configuredSummary: summary,
+      configuredTitle: translation.pullRequestTitles.get(pullRequest.number),
+    };
+  }
+
+  return {
+    featuredGroups: featuredGroups.map((group) => ({
+      ...group,
+      introduction: translations.get(group.repository.full_name.toLowerCase())?.introduction
+        || copy.projectDescription,
+      pullRequests: group.pullRequests
+        .map((pullRequest) => translatePullRequest(group.repository, pullRequest))
+        .filter(Boolean),
+    })).filter((group) => group.pullRequests.length),
+    morePullRequests: morePullRequests.map(({ repository, pullRequest }) => ({
+      repository,
+      pullRequest: translatePullRequest(repository, pullRequest),
+    })).filter((entry) => entry.pullRequest),
+  };
 }
 
 function makeApiUrl(resource, query = {}) {
@@ -528,8 +633,13 @@ function formatStars(value) {
   return String(stars);
 }
 
-function statusBadge(status) {
-  return `<img align="absmiddle" src="https://img.shields.io/badge/-${status.label}-${status.color}?style=flat-square" alt="${status.label}" />`;
+function pullRequestDisplayTitle(pullRequest) {
+  return pullRequest.configuredTitle || cleanTitle(pullRequest.title);
+}
+
+function statusBadge(status, copy) {
+  const label = copy.statuses[status.label];
+  return `<img align="absmiddle" src="https://img.shields.io/badge/-${encodeURIComponent(label)}-${status.color}?style=flat-square" alt="${htmlEscape(label)}" />`;
 }
 
 function starsBadge(repository, alignment = "") {
@@ -552,12 +662,12 @@ function renderProfileSummary(
   const badges = [];
   if (contributedStars >= minimumContributedStars) {
     badges.push(
-      `<img src="https://img.shields.io/badge/Contrib._Stars-${formatStars(contributedStars)}-0969da?style=for-the-badge&amp;labelColor=3d444d&amp;logo=${starLogo}" alt="${formatStars(contributedStars)} contributed project Stars" />`,
+      `<img src="https://img.shields.io/badge/Contrib._Stars-${formatStars(contributedStars)}-0969da?style=for-the-badge&amp;labelColor=3d444d&amp;logo=${starLogo}" alt="${formatStars(contributedStars)} Stars across unique contributed repositories" />`,
     );
   }
   if (ownedStars >= minimumOpenSourceStars) {
     badges.push(
-      `<img src="https://img.shields.io/badge/Open--source_Stars-${formatStars(ownedStars)}-1f883d?style=for-the-badge&amp;labelColor=3d444d&amp;logo=${starLogo}" alt="${formatStars(ownedStars)} open-source Stars" />`,
+      `<img src="https://img.shields.io/badge/Own_Stars-${formatStars(ownedStars)}-1f883d?style=for-the-badge&amp;labelColor=3d444d&amp;logo=${starLogo}" alt="${formatStars(ownedStars)} Stars across owned public repositories" />`,
     );
   }
 
@@ -570,7 +680,7 @@ function renderContentSection(title, source) {
   return body ? `## ${title}\n\n${body}` : "";
 }
 
-function renderOpenSource(entries, ownedRepositories, minimumStarsToShow) {
+function renderOpenSource(entries, ownedRepositories, minimumStarsToShow, copy) {
   const repositoriesByName = new Map(
     ownedRepositories.map((repository) => [repository.full_name.toLowerCase(), repository]),
   );
@@ -601,7 +711,7 @@ function renderOpenSource(entries, ownedRepositories, minimumStarsToShow) {
   if (!selected.length) return "";
 
   const cells = selected.map(({ data, description: configuredDescription }) => {
-    const description = configuredDescription || data.description || "Open-source project.";
+    const description = configuredDescription || data.description || copy.projectDescription;
     const language = data.language ? `<code>${htmlEscape(data.language)}</code>` : "";
     return [
       `<td width="${selected.length === 1 ? "100" : "50"}%" valign="top">`,
@@ -626,22 +736,22 @@ function renderOpenSource(entries, ownedRepositories, minimumStarsToShow) {
     );
   }
 
-  return `## 📦 Open Source\n\n<table>\n${rows.join("\n")}\n</table>`;
+  return `## ${copy.openSource}\n\n<table>\n${rows.join("\n")}\n</table>`;
 }
 
-function renderCollapsedPullRequests(pullRequests, summaryMaximumLength) {
+function renderCollapsedPullRequests(pullRequests, summaryMaximumLength, copy) {
   if (!pullRequests.length) return "";
 
   const rows = pullRequests.map((pullRequest) => {
     const summary = pullRequestDisplaySummary(pullRequest, summaryMaximumLength);
-    return `| [#${pullRequest.number} · ${markdownCell(cleanTitle(pullRequest.title))}](${pullRequest.html_url}) | ${markdownCell(summary)} | <code>${pullRequestStatus(pullRequest).label}</code> |`;
+    return `| [#${pullRequest.number} · ${markdownCell(pullRequestDisplayTitle(pullRequest))}](${pullRequest.html_url}) | ${markdownCell(summary)} | <code>${copy.statuses[pullRequestStatus(pullRequest).label]}</code> |`;
   });
 
   return [
     "<details>",
-    `<summary>More pull requests (${pullRequests.length})</summary>`,
+    `<summary>${copy.morePullRequests.replace("{count}", String(pullRequests.length))}</summary>`,
     "",
-    "| Pull request | Summary | Status |",
+    `| ${copy.pullRequestColumn} | ${copy.summaryColumn} | ${copy.statusColumn} |`,
     "|---|---|:---:|",
     ...rows,
     "",
@@ -653,12 +763,13 @@ function renderFeaturedContributions(
   groups,
   summaryMaximumLength,
   expandedPullRequestLimit,
+  copy,
 ) {
   if (!groups.length) return "";
 
   const cards = groups.map(({ repository, pullRequests, introduction }) => {
     const description = truncateText(
-      introduction || repository.description || "Open-source project.",
+      introduction || repository.description || copy.projectDescription,
       300,
     );
     const expandedPullRequests = pullRequests.slice(0, expandedPullRequestLimit);
@@ -668,7 +779,7 @@ function renderFeaturedContributions(
       const summary = pullRequestDisplaySummary(pullRequest, summaryMaximumLength);
       return [
         index ? "      <br /><br />" : "",
-        `      ${statusBadge(status)}&nbsp; <strong><a href="${htmlEscape(pullRequest.html_url)}">PR #${pullRequest.number}</a> · ${htmlEscape(cleanTitle(pullRequest.title))}</strong>`,
+        `      ${statusBadge(status, copy)}&nbsp; <strong><a href="${htmlEscape(pullRequest.html_url)}">PR #${pullRequest.number}</a> · ${htmlEscape(pullRequestDisplayTitle(pullRequest))}</strong>`,
         "      <br />",
         `      <sub>${htmlEscape(summary)}</sub>`,
       ]
@@ -697,24 +808,24 @@ function renderFeaturedContributions(
       .join("\n");
     return [
       card,
-      renderCollapsedPullRequests(collapsedPullRequests, summaryMaximumLength),
+      renderCollapsedPullRequests(collapsedPullRequests, summaryMaximumLength, copy),
     ]
       .filter(Boolean)
       .join("\n\n");
   });
 
-  return `## ✨ Featured Contributions\n\n${cards.join("\n\n<br />\n\n")}`;
+  return `## ${copy.featuredContributions}\n\n${cards.join("\n\n<br />\n\n")}`;
 }
 
-function renderMoreContributions(pullRequests, summaryMaximumLength) {
+function renderMoreContributions(pullRequests, summaryMaximumLength, copy) {
   if (!pullRequests.length) return "";
 
   const rows = pullRequests.map(({ repository, pullRequest }) => {
-    const status = pullRequestStatus(pullRequest).label;
+    const status = copy.statuses[pullRequestStatus(pullRequest).label];
     const summary = pullRequestDisplaySummary(pullRequest, summaryMaximumLength);
     return [
       `[${markdownCell(repository.full_name)}](${repository.html_url})`,
-      `[#${pullRequest.number} · ${markdownCell(cleanTitle(pullRequest.title))}](${pullRequest.html_url})`,
+      `[#${pullRequest.number} · ${markdownCell(pullRequestDisplayTitle(pullRequest))}](${pullRequest.html_url})`,
       markdownCell(summary),
       `<code>${status}</code>`,
       `[⭐ ${formatStars(repository.stargazers_count)}](${repository.html_url}/stargazers)`,
@@ -722,9 +833,9 @@ function renderMoreContributions(pullRequests, summaryMaximumLength) {
   });
 
   return [
-    "## 🔗 More Contributions",
+    `## ${copy.moreContributions}`,
     "",
-    "| Repository | Pull request | Summary | Status | Stars |",
+    `| ${copy.repositoryColumn} | ${copy.pullRequestColumn} | ${copy.summaryColumn} | ${copy.statusColumn} | Stars |`,
     "|---|---|---|:---:|:---:|",
     ...rows.map((row) => `| ${row} |`),
   ].join("\n");
@@ -735,14 +846,16 @@ function renderContributions(
   morePullRequests,
   summaryMaximumLength,
   expandedPullRequestLimit,
+  copy,
 ) {
   return [
     renderFeaturedContributions(
       featuredGroups,
       summaryMaximumLength,
       expandedPullRequestLimit,
+      copy,
     ),
-    renderMoreContributions(morePullRequests, summaryMaximumLength),
+    renderMoreContributions(morePullRequests, summaryMaximumLength, copy),
   ]
     .filter(Boolean)
     .join("\n\n");
@@ -861,31 +974,17 @@ function splitContributions(contributionGroups, configuredRepositories) {
   return { featuredGroups, morePullRequests };
 }
 
-async function buildArtifacts() {
-  const sectionNames = Object.keys(sectionSourcePaths);
-  const [template, configSource, ...sectionSources] = await Promise.all([
-    readFile(templatePath, "utf8"),
-    readFile(configPath, "utf8"),
-    ...sectionNames.map((name) => readFile(sectionSourcePaths[name], "utf8")),
-  ]);
-  const config = JSON.parse(configSource);
-  assertConfig(config);
-  const sources = Object.fromEntries(
-    sectionNames.map((name, index) => [name, sectionSources[index]]),
-  );
-  const openSourceEntries = parseOpenSourceEntries(sources.OPEN_SOURCE);
-  const contributionEntries = parseContributionEntries(sources.CONTRIBUTIONS);
+function renderLanguageSwitch(locale) {
+  const links = Object.entries(locales).map(([id, copy]) => id === locale
+    ? `<strong>${copy.label}</strong>`
+    : `<a href="./${copy.fileName}">${copy.label}</a>`);
+  return `<p align="center">\n  ${links.join(" · ")}\n</p>`;
+}
 
-  const [ownedRepositories, searchResults, configuredPullRequests] = await Promise.all([
-    fetchOwnedRepositories(config.username),
-    searchAuthoredPullRequests(config.username),
-    fetchConfiguredPullRequestDetails(contributionEntries),
-  ]);
-  const searchedPullRequests = await fetchPullRequestDetails(searchResults);
-  const pullRequests = mergePullRequests(
-    searchedPullRequests,
-    configuredPullRequests,
-  );
+export function renderProfilePages({ template, config, sourcesByLocale, ownedRepositories, pullRequests }) {
+  assertConfig(config);
+  const openSourceEntries = parseOpenSourceEntries(sourcesByLocale.en.OPEN_SOURCE);
+  const contributionEntries = parseContributionEntries(sourcesByLocale.en.CONTRIBUTIONS);
   const contributionGroups = groupContributions(pullRequests, config.username);
 
   const ownedStars = ownedRepositories
@@ -897,7 +996,7 @@ async function buildArtifacts() {
 
   const expandedPullRequestLimit = config.featuredPullRequestsPerRepository ?? 2;
   const summaryMaximumLength = config.pullRequestSummaryMaxLength ?? 360;
-  const { featuredGroups, morePullRequests } = splitContributions(
+  const contributions = splitContributions(
     contributionGroups,
     contributionEntries,
   );
@@ -908,30 +1007,90 @@ async function buildArtifacts() {
     config.minimumContributedStarsToShow ?? config.minimumStarsToShow ?? 500,
     config.minimumOpenSourceStarsToShow ?? 0,
   );
-  const sections = {
-    ABOUT_ME: renderContentSection("🚀 About Me", sources.ABOUT_ME),
-    OPEN_SOURCE: renderOpenSource(
-      openSourceEntries,
-      ownedRepositories,
-      config.minimumOpenSourceProjectStarsToShow ?? 200,
-    ),
-    CONTRIBUTIONS: renderContributions(
-      featuredGroups,
-      morePullRequests,
-      summaryMaximumLength,
-      expandedPullRequestLimit,
-    ),
-    HONORS: renderContentSection("🏆 Honors", sources.HONORS),
-    CONTACT: renderContentSection("📫 Contact", sources.CONTACT),
-  };
-
-  let readme = template;
-  readme = replaceTemplateToken(readme, "PROFILE_SUMMARY", profileSummary);
-  for (const [name, content] of Object.entries(sections)) {
-    readme = replaceTemplateToken(readme, name, content);
+  const artifacts = new Map();
+  for (const [locale, copy] of Object.entries(locales)) {
+    const sources = sourcesByLocale[locale];
+    let localizedOpenSource = openSourceEntries;
+    let localizedContributions = contributions;
+    if (locale !== "en") {
+      const projectTranslations = parseTranslatedRepositories(sources.OPEN_SOURCE, "open-source", locale);
+      localizedOpenSource = openSourceEntries
+        .filter((entry) => projectTranslations.get(entry.repository.toLowerCase())?.description)
+        .map((entry) => ({
+          ...entry,
+          description: projectTranslations.get(entry.repository.toLowerCase()).description,
+        }));
+      localizedContributions = translateContributions(
+        contributions,
+        parseTranslatedRepositories(sources.CONTRIBUTIONS, "contributions", locale),
+        copy,
+      );
+    }
+    const sections = {
+      HERO_ALT: htmlEscape(copy.heroAlt),
+      LANGUAGE_SWITCH: renderLanguageSwitch(locale),
+      TAGLINE: htmlEscape(copy.tagline),
+      FOOTER: htmlEscape(copy.footer),
+      COMMIT_CONVENTION_TITLE: htmlEscape(copy.commitConventionTitle),
+      COMMIT_CONVENTION: copy.commitConvention,
+      PROFILE_SUMMARY: profileSummary,
+      ABOUT_ME: renderContentSection(copy.about, sources.ABOUT_ME),
+      OPEN_SOURCE: renderOpenSource(
+        localizedOpenSource,
+        ownedRepositories,
+        config.minimumOpenSourceProjectStarsToShow ?? 200,
+        copy,
+      ),
+      CONTRIBUTIONS: renderContributions(
+        localizedContributions.featuredGroups,
+        localizedContributions.morePullRequests,
+        summaryMaximumLength,
+        expandedPullRequestLimit,
+        copy,
+      ),
+      HONORS: renderContentSection(copy.honors, sources.HONORS),
+      CONTACT: renderContentSection(copy.contact, sources.CONTACT),
+    };
+    let readme = template;
+    for (const [name, content] of Object.entries(sections)) {
+      readme = replaceTemplateToken(readme, name, content);
+    }
+    artifacts.set(path.join(rootDirectory, copy.fileName), normalizeMarkdown(readme));
   }
+  return artifacts;
+}
 
-  return new Map([[readmePath, normalizeMarkdown(readme)]]);
+async function buildArtifacts() {
+  const [template, configSource, sourceEntries] = await Promise.all([
+    readFile(templatePath, "utf8"),
+    readFile(configPath, "utf8"),
+    Promise.all(Object.keys(locales).map(async (locale) => [
+      locale,
+      Object.fromEntries(await Promise.all(
+        Object.entries(sectionFileNames).map(async ([name, fileName]) => [
+          name,
+          await readFile(path.join(sectionsDirectory, locale, fileName), "utf8"),
+        ]),
+      )),
+    ])),
+  ]);
+  const config = JSON.parse(configSource);
+  assertConfig(config);
+  const sourcesByLocale = Object.fromEntries(sourceEntries);
+  const contributionEntries = parseContributionEntries(sourcesByLocale.en.CONTRIBUTIONS);
+  const [ownedRepositories, searchResults, configuredPullRequests] = await Promise.all([
+    fetchOwnedRepositories(config.username),
+    searchAuthoredPullRequests(config.username),
+    fetchConfiguredPullRequestDetails(contributionEntries),
+  ]);
+  const searchedPullRequests = await fetchPullRequestDetails(searchResults);
+  return renderProfilePages({
+    template,
+    config,
+    sourcesByLocale,
+    ownedRepositories,
+    pullRequests: mergePullRequests(searchedPullRequests, configuredPullRequests),
+  });
 }
 
 async function readCurrentFile(filePath) {
@@ -947,33 +1106,39 @@ function displayPath(filePath) {
   return path.relative(rootDirectory, filePath).replaceAll("\\", "/");
 }
 
-const artifacts = await buildArtifacts();
-const currentArtifacts = new Map(
-  await Promise.all(
-    [...artifacts.keys()].map(async (filePath) => [filePath, await readCurrentFile(filePath)]),
-  ),
-);
-const changedFiles = [...artifacts.entries()]
-  .filter(([filePath, content]) => content !== currentArtifacts.get(filePath))
-  .map(([filePath]) => filePath);
-
-if (process.argv.includes("--check")) {
-  if (changedFiles.length) {
-    console.error(
-      `Generated profile files are out of date: ${changedFiles.map(displayPath).join(", ")}`,
-    );
-    console.error("Run: node scripts/update-profile.mjs");
-    process.exitCode = 1;
-  } else {
-    console.log("README.md is up to date.");
+async function main() {
+  const previewLocale = process.argv.find((argument) => argument.startsWith("--locale="))?.slice(9) || "en";
+  if (!Object.hasOwn(locales, previewLocale)) {
+    throw new Error(`Unknown locale: ${previewLocale}; expected en or zh-CN`);
   }
-} else if (process.argv.includes("--dry-run")) {
-  process.stdout.write(artifacts.get(readmePath));
-} else if (!changedFiles.length) {
-  console.log("README.md is already up to date.");
-} else {
-  await Promise.all(
-    changedFiles.map((filePath) => writeFile(filePath, artifacts.get(filePath), "utf8")),
+  const artifacts = await buildArtifacts();
+  const currentArtifacts = new Map(
+    await Promise.all(
+      [...artifacts.keys()].map(async (filePath) => [filePath, await readCurrentFile(filePath)]),
+    ),
   );
-  console.log(`Updated: ${changedFiles.map(displayPath).join(", ")}`);
+  const changedFiles = [...artifacts.entries()]
+    .filter(([filePath, content]) => content !== currentArtifacts.get(filePath))
+    .map(([filePath]) => filePath);
+
+  if (process.argv.includes("--check")) {
+    if (changedFiles.length) {
+      console.error(`Generated profile files are out of date: ${changedFiles.map(displayPath).join(", ")}`);
+      console.error("Run: node scripts/update-profile.mjs");
+      process.exitCode = 1;
+    } else {
+      console.log("Profile READMEs are up to date.");
+    }
+  } else if (process.argv.includes("--dry-run")) {
+    process.stdout.write(artifacts.get(path.join(rootDirectory, locales[previewLocale].fileName)));
+  } else if (!changedFiles.length) {
+    console.log("Profile READMEs are already up to date.");
+  } else {
+    await Promise.all(changedFiles.map((filePath) => writeFile(filePath, artifacts.get(filePath), "utf8")));
+    console.log(`Updated: ${changedFiles.map(displayPath).join(", ")}`);
+  }
+}
+
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  await main();
 }
