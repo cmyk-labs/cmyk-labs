@@ -74,16 +74,5 @@
 ---
 
 <p align="center">
-  <sub>项目 Stars 和 PR 状态自动更新。</sub>
+  <sub>视觉效果随 GitHub 主题自动适配，仓库 Stars、PR 状态、排名和摘要自动更新。</sub>
 </p>
-
-<details>
-<summary>提交规范</summary>
-
-所有新提交，包括自动更新，统一使用 `type(scope): summary`。类型和范围使用小写，范围必填且不能为空，冒号后恰好一个空格。摘要使用简洁英文，以动词原形开头，末尾不加句号。类型、范围和示例见 [AGENTS.zh-CN.md](./AGENTS.zh-CN.md)。
-
-```text
-docs(profile): clarify project introductions and PR contributions
-```
-
-</details>

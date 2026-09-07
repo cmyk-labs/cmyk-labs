@@ -10,9 +10,9 @@
 | `sections/en/` | 英文正文，以及自有项目、贡献项目的主配置 |
 | `sections/zh-CN/` | 中文正文与项目、PR 译文 |
 | `../profile.config.json` | 两种语言共用的用户名、统计展示门槛和 PR 展开数量 |
-| `../../scripts/update-profile.mjs` 中的 `locales` | 语言名称、定位句、页脚、栏目标题、状态译名和提交规范说明 |
+| `../../scripts/update-profile.mjs` 中的 `locales` | 语言名称、定位句、页脚、栏目标题和状态译名 |
 
-两个语言目录均保留 `about.md`、`open-source.md`、`contributions.md`、`honors.md` 和 `contact.md`。语言切换在头图下方、定位句上方居中显示；当前语言加粗，另一种语言链接到对应 README。
+两个语言目录均保留 `about.md`、`open-source.md`、`contributions.md`、`honors.md` 和 `contact.md`。语言切换在头图下方、定位句上方居中显示；两种页面的标签均固定为 `English · 简体中文`，当前语言加粗，另一种语言链接到对应 README。
 
 根目录两份 README 是生成结果，日常修改对应源文案后重新生成。
 
@@ -41,7 +41,7 @@ node scripts/update-profile.mjs --check
 
 所有新提交统一使用 `type(scope): summary`，范围必填，类型和范围使用小写，冒号后恰好一个空格。摘要使用简洁英文，以动词原形开头，末尾不加句号。例如：`docs(profile): clarify project introductions and PR contributions`。
 
-自动更新工作流使用 `chore(profile): refresh profile data`。完整规则见根目录 [AGENTS.md](../../AGENTS.md) 和 [AGENTS.zh-CN.md](../../AGENTS.zh-CN.md)。README 页底的双语折叠说明由共享模板和生成脚本中的 `locales` 维护，修改规范时同步这些入口。
+自动更新工作流使用 `chore(profile): refresh profile data`。完整规则见根目录 [AGENTS.md](../../AGENTS.md) 和 [AGENTS.zh-CN.md](../../AGENTS.zh-CN.md)。
 
 ## 顶部 Stars 徽章
 

@@ -29,14 +29,3 @@
 <p align="center">
   <sub>{{FOOTER}}</sub>
 </p>
-
-<details>
-<summary>{{COMMIT_CONVENTION_TITLE}}</summary>
-
-{{COMMIT_CONVENTION}}
-
-```text
-docs(profile): clarify project introductions and PR contributions
-```
-
-</details>

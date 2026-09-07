@@ -74,16 +74,5 @@ I'm **cmyk-labs**, an open-source contributor exploring how AI capabilities can 
 ---
 
 <p align="center">
-  <sub>Project stars and PR statuses are refreshed automatically.</sub>
+  <sub>Visuals adapt to your GitHub theme, while repository stars, pull request statuses, rankings, and summaries refresh automatically.</sub>
 </p>
-
-<details>
-<summary>Commit convention</summary>
-
-All new commits, including automated updates, use `type(scope): summary`. Use a lowercase type and a required, nonempty lowercase scope, followed by a colon and one space. Write a concise English summary beginning with a verb in the base form, without a trailing period. See [AGENTS.md](./AGENTS.md) for types, scopes, and examples.
-
-```text
-docs(profile): clarify project introductions and PR contributions
-```
-
-</details>
