@@ -47,12 +47,29 @@ I'm **cmyk-labs**, an open-source contributor exploring how AI capabilities can 
   </tr>
 </table>
 
-## 🔗 More Contributions
+<br />
 
-| Repository | Pull request | Summary | Status | Stars |
-|---|---|---|:---:|:---:|
-| [loopx-project/loopx](https://github.com/loopx-project/loopx) | [#3554 · Promote durable runtime milestones](https://github.com/loopx-project/loopx/pull/3554) | Adds a provider-neutral runtime producer that consumes a bounded, durable rollout-event window. Promotes deduplicated todo_complete thresholds or durable autonomous_replan_recorded refreshes into the existing bounded_segment_milestone trigger path. | <code>Merged</code> | [⭐ 5.9k](https://github.com/loopx-project/loopx/stargazers) |
-| [loopx-project/loopx](https://github.com/loopx-project/loopx) | [#3527 · Add bounded segment milestone trigger](https://github.com/loopx-project/loopx/pull/3527) | Adds bounded_segment_milestone as a reportable periodic-report trigger. Requires a bounded segment reference and validated transition, with materiality gated on segment_completed or replan_entered plus durable writeback. | <code>Merged</code> | [⭐ 5.9k](https://github.com/loopx-project/loopx/stargazers) |
+<table>
+  <tr>
+    <td valign="top">
+      <a href="https://github.com/loopx-project/loopx/stargazers"><img align="right" src="https://img.shields.io/github/stars/loopx-project/loopx?style=flat-square&amp;label=Stars&amp;labelColor=3d444d&amp;color=0969da&amp;logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI%2BPHBhdGggZmlsbD0iI2Y2ZDMyZCIgZD0ibTEyIDIuNSAyLjkgNS44OCA2LjQ5Ljk0LTQuNyA0LjU4IDEuMTEgNi40NkwxMiAxNy4zMWwtNS44IDMuMDUgMS4xMS02LjQ2LTQuNy00LjU4IDYuNDktLjk0TDEyIDIuNVoiLz48L3N2Zz4%3D" alt="loopx-project/loopx Stars" /></a>
+      <a href="https://github.com/loopx-project/loopx"><img align="absmiddle" width="28" height="28" src="https://avatars.githubusercontent.com/u/331332701?v=4" alt="loopx-project avatar" /></a>&nbsp;<strong><a href="https://github.com/loopx-project/loopx">loopx-project/loopx</a></strong>
+      <br />
+      <sub>An open-source, provider-neutral, stateful control plane for long-running AI agents. It works with Codex, Claude Code, and other agent harnesses to preserve goals, tasks, and evidence across turns, supporting execution governance, recovery, and human-agent collaboration.</sub>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img align="absmiddle" src="https://img.shields.io/badge/-Merged-8250df?style=flat-square" alt="Merged" />&nbsp; <strong><a href="https://github.com/loopx-project/loopx/pull/3527">PR #3527</a> · Add bounded segment milestone trigger</strong>
+      <br />
+      <sub>Addressed the lack of stage-milestone report triggers in long-running Agent Loops. Added a bounded-segment milestone trigger that validates segment identity, state transitions, and durable-writeback flags before treating stage completion or entry into replanning as reportable. Integrated the trigger into the weekly reporting preset, assigning its priority and reusing the existing milestone report type, cooldown, and event coalescing. Intermediate milestones can now qualify for reporting even when unfinished todos remain.</sub>
+      <br /><br />
+      <img align="absmiddle" src="https://img.shields.io/badge/-Merged-8250df?style=flat-square" alt="Merged" />&nbsp; <strong><a href="https://github.com/loopx-project/loopx/pull/3554">PR #3554</a> · Promote durable runtime milestones</strong>
+      <br />
+      <sub>Extended #3527 with a provider-neutral runtime event producer that converts durable execution events into milestone trigger decisions. Added event aggregation and an evaluation entry point to validate caller-supplied event windows and deduplicate events and completed todos. When completion counts reach a configured threshold or a durable autonomous replan is detected, the producer submits milestone candidates to the existing trigger evaluator, reusing history deduplication and cooldown. Aggregation settings remain intact during report composition, allowing eligible decisions to continue through the existing report pipeline.</sub>
+    </td>
+  </tr>
+</table>
 
 ---
 
