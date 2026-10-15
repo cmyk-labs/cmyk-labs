@@ -6,7 +6,7 @@ This file applies to the entire repository. Follow the user's current instructio
 
 This repository contains the GitHub profile for `cmyk-labs/cmyk-labs`, presenting personal background, research interests, owned open-source projects, open-source contributions, honors, and contact information.
 
-- Research interests: **AI agents, LLM infrastructure, and AI algorithms**. Retain department information in the education background.
+- Research interests: **AI agents, AI-native applications, and AI algorithms**. Retain department information in the education background.
 - The pages use Markdown, HTML, and SVG. A Node.js script generates the English and Chinese profiles from source files and GitHub data.
 - GitHub Actions checks and updates both profiles when relevant files are pushed, on a daily schedule set to 08:00 Beijing time (00:00 UTC), or through a manual trigger.
 - The empty Open Source, Honors, and Contact sections are reserved for future content and must be retained.
@@ -48,7 +48,7 @@ In the table below, "bilingual files" means files with the same name under `.git
 | Task | Files to Edit | Requirements |
 |---|---|---|
 | Personal introduction, education, or research interests | Bilingual `about.md` | Update the relevant text and retain department information and research interests |
-| Add an owned open-source project | Bilingual `open-source.md` | Configure the repository and featured status in English; provide a Chinese description. Displayed projects must be owned, public, non-fork repositories |
+| Add an owned open-source project | Bilingual `open-source.md` | Configure the repository and featured status in English; provide a Chinese description. Optional `Logo` and `Dark Logo` columns use the project's own assets, with Chinese overrides as needed. Displayed projects must be owned, public, non-fork repositories; omit technology-stack labels |
 | Add a contributed project | Bilingual `contributions.md` | Add the repository, featured status, project introduction, PR numbers, and summaries in English; provide the corresponding Chinese translations |
 | Add a PR to an existing project | The existing project row in bilingual `contributions.md` | Add the PR number and summary in English; add the Chinese summary and optional title under the same number. Do not create a duplicate repository row |
 | Add honors or contact information | The relevant bilingual `honors.md` or `contact.md` files | Use plain Markdown content without repeating the section heading |
@@ -65,7 +65,7 @@ After changes that affect the profiles, run the generation script and inspect bo
 - **Accuracy**: Base project introductions on actual project materials. Base contribution descriptions on PR descriptions and, where necessary, code diffs, following "problem—solution—result." Do not invent achievements, performance metrics, tests, or merge status. Identify missing facts instead of filling gaps with speculation.
 - **Technical wording**: Retain useful terms such as Sub-Agent, Skills, and LLM; avoid crowding descriptions with internal function names. Modify previously approved text only within the current task's scope.
 - **Keep languages synchronized**: When manually adding or substantially changing displayed content, update both English and Chinese with matching facts and scope. Project names, technical terms, and links may retain their original form. Use contact information supplied by the user and intended for public display.
-- **Separate selection from translation**: English tables determine project selection and configured PR order. Chinese tables provide translations keyed by repository and PR number; do not add independent selection fields such as `Featured` or `Pull Requests`. PR numbers in manual English summaries must appear in the same row's `Pull Requests` field.
+- **Separate selection from translation**: English tables determine project selection and configured PR order. Owned projects follow the English table's row order in both languages; move a row earlier to pin that project ahead of others, independent of Stars. Chinese tables provide translations keyed by repository and PR number; do not add independent selection fields such as `Featured` or `Pull Requests`. PR numbers in manual English summaries must appear in the same row's `Pull Requests` field.
 - **Missing translations**: The Chinese page displays only PRs with Chinese summaries. Chinese titles are optional and default to upstream titles. Automatically discovered PRs without translations may temporarily appear only on the English page; supply translations when adding content manually.
 - **Retain empty sections**: Empty files or files containing only HTML comments hide the section in that language. Keep the source files and do not add fabricated placeholder content.
 - **Share data and statistics**: Both profiles use the same data batch. `Contrib. Stars` deduplicates external public repositories associated with the user's retrieved PRs, includes all PR statuses, and counts each project once. `Own Stars` counts owned public repositories, including forks. Featured selection, collapsed display, and translation completeness do not affect statistics; display thresholds come from the configuration.
@@ -100,7 +100,7 @@ git diff --check
 ## 6. Git Commits and Pushes
 
 1. **Protect existing work**: Inspect the working tree before editing, and inspect working tree and staged diffs before committing. Stage only files within the authorized scope, preserving other uncommitted work. For profile changes, inspect both the sources and bilingual artifacts.
-2. **Follow authorization**: Permission to edit files does not automatically authorize commits or pushes. When the user asks for a report first, finish the checks, report the commit plan, and wait for authorization. Once commits and pushes for the same batch of changes are authorized, complete them without asking again.
+2. **Follow authorization**: Permission to edit files does not automatically authorize commits or pushes. The agent must not commit or push until the user explicitly confirms those actions in a reply. When the user asks for a report first, finish the checks, report the commit plan, and wait for authorization. Once commits and pushes for the same batch of changes are explicitly authorized, complete them without asking again.
 3. **Report before committing**: State the actual author and committer names and emails, target remote and branch, proposed commit message, and commit scope.
 4. **Verify identity and target**: The expected human identity is `cmyk-labs <263870852+cmyk-labs@users.noreply.github.com>`. The current target is `origin` → `https://github.com/cmyk-labs/cmyk-labs.git`, branch `main`. Verify these at execution time and follow the user's current instructions. Do not change global Git configuration or use the bot identity for human changes without authorization.
 5. **Use a consistent commit format**: All new commits, including automated updates, must follow the format below. Choose the type and scope based on the actual changes.

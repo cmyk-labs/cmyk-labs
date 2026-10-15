@@ -130,6 +130,25 @@ test("empty or untranslated modules hide independently while statistics remain s
   assert.match(output["README.zh-CN.md"], /Contrib\._Stars-12k-/);
 });
 
+test("owned projects keep configured pin order across languages and star changes", () => {
+  const input = fixture();
+  input.ownedRepositories.unshift(repository("cmyk-labs/popular", 500));
+  input.sourcesByLocale.en.OPEN_SOURCE += "\n| cmyk-labs/popular | true | Popular project. |";
+  input.sourcesByLocale["zh-CN"].OPEN_SOURCE = "| Repository | Description |\n|---|---|\n| cmyk-labs/popular | 高星项目。 |\n| cmyk-labs/own | 置顶项目。 |";
+
+  for (const content of Object.values(pages(input))) {
+    assert.ok(content.indexOf("https://github.com/cmyk-labs/own") < content.indexOf("https://github.com/cmyk-labs/popular"));
+    assert.ok(content.indexOf("https://github.com/cmyk-labs/popular") < content.indexOf("https://github.com/org/featured"));
+    assert.match(content, /Own_Stars-650-/);
+  }
+
+  input.ownedRepositories[0].stargazers_count = 5000;
+  for (const content of Object.values(pages(input))) {
+    assert.ok(content.indexOf("https://github.com/cmyk-labs/own") < content.indexOf("https://github.com/cmyk-labs/popular"));
+    assert.match(content, /Own_Stars-5\.2k-/);
+  }
+});
+
 test("partial PR translations hide only untranslated PRs and escape translated text", () => {
   const input = fixture();
   input.sourcesByLocale["zh-CN"].CONTRIBUTIONS = "| Repository | Introduction | PR Summaries | PR Titles |\n|---|---|---|---|\n| org/featured | 中文介绍。 | 10: 保留 <b>提示词</b> 与 A&B。 | 10: <script>标题</script> |";
@@ -138,6 +157,25 @@ test("partial PR translations hide only untranslated PRs and escape translated t
   assert.match(chinese, /&lt;b&gt;提示词&lt;\/b&gt; 与 A&amp;B/);
   assert.doesNotMatch(chinese, /<script>|\/pull\/11|\/pull\/12|## 🔗 更多开源贡献/);
   assert.match(chinese, /Contrib\._Stars-12k-/);
+});
+
+test("owned project logos support localized themes without owner avatars or stack labels", () => {
+  const input = fixture();
+  input.ownedRepositories[0].owner.avatar_url = "https://example.com/owner.png";
+  input.ownedRepositories[0].language = "TypeScript";
+  input.sourcesByLocale.en.OPEN_SOURCE = '| Repository | Featured | Description | Logo | Dark Logo |\n|---|---|---|---|---|\n| cmyk-labs/own | true | Own project. | https://example.com/logo.png?a=1&b=2 | https://example.com/dark.png |';
+  const fallback = pages(input)["README.zh-CN.md"];
+  assert.match(fallback, /src="https:\/\/example.com\/logo.png\?a=1&amp;b=2"/);
+  assert.match(fallback, /media="\(prefers-color-scheme: dark\)" srcset="https:\/\/example.com\/dark.png"/);
+
+  input.sourcesByLocale["zh-CN"].OPEN_SOURCE = '| Repository | Description | Logo | Dark Logo |\n|---|---|---|---|\n| cmyk-labs/own | 自有项目。 | https://example.com/zh.png | https://example.com/zh-dark.png |';
+  const output = pages(input);
+  assert.match(output["README.zh-CN.md"], /src="https:\/\/example.com\/zh.png"/);
+  assert.match(output["README.zh-CN.md"], /srcset="https:\/\/example.com\/zh-dark.png"/);
+  for (const content of Object.values(output)) {
+    assert.match(content, /alt="cmyk-labs\/own logo"/);
+    assert.doesNotMatch(content, /owner.png|TypeScript/);
+  }
 });
 
 for (const [name, translation, expected] of [

@@ -20,7 +20,7 @@ const locales = {
     label: "English",
     fileName: "README.md",
     heroAlt: "cmyk-labs — Build intelligent agents. Ship useful tools.",
-    tagline: "Open-source work on AI agents, LLM infrastructure, and AI algorithms.",
+    tagline: "Open-source work on AI agents, AI-native applications, and AI algorithms.",
     footer: "Visuals adapt to your GitHub theme, while repository stars, pull request statuses, rankings, and summaries refresh automatically.",
     about: "🚀 About Me",
     openSource: "📦 Open Source",
@@ -40,7 +40,7 @@ const locales = {
     label: "简体中文",
     fileName: "README.zh-CN.md",
     heroAlt: "cmyk-labs — 构建智能 Agent，交付实用工具。",
-    tagline: "围绕 AI Agent、LLM 基础设施和 AI 算法开展开源工作。",
+    tagline: "围绕 AI 智能体、AI 原生应用与 AI 算法开展开源工作。",
     footer: "视觉效果随 GitHub 主题自动适配，仓库 Stars、PR 状态、排名和摘要自动更新。",
     about: "🚀 关于我",
     openSource: "📦 开源项目",
@@ -199,6 +199,8 @@ function parseOpenSourceEntries(source) {
       repository,
       featured: parseFeatured(row.featured, context),
       description: row.description.trim(),
+      logo: row.logo?.trim() || "",
+      darkLogo: row.darklogo?.trim() || "",
     };
   });
   assertUniqueRepositories(entries, "open-source.md");
@@ -276,7 +278,7 @@ function parseTranslatedRepositories(source, section, locale) {
     ? ["Repository", "Description"]
     : ["Repository", "Introduction", "PR Summaries"];
   const allowedColumns = new Set(
-    [...requiredColumns, ...(section === "contributions" ? ["PR Titles"] : [])]
+    [...requiredColumns, ...(section === "contributions" ? ["PR Titles"] : ["Logo", "Dark Logo"])]
       .map(normalizedColumnName),
   );
   const entries = parseMarkdownTable(source, requiredColumns, fileName).map((row, index) => {
@@ -290,6 +292,8 @@ function parseTranslatedRepositories(source, section, locale) {
     return {
       repository,
       description: row.description?.trim() || "",
+      logo: row.logo?.trim() || "",
+      darkLogo: row.darklogo?.trim() || "",
       introduction: row.introduction?.trim() || "",
       pullRequestSummaries: parsePullRequestSummaries(row.prsummaries, context, null),
       pullRequestTitles: parsePullRequestSummaries(row.prtitles, context, null, "PR Titles"),
@@ -649,6 +653,15 @@ function repositoryAvatar(repository) {
   return `<a href="${htmlEscape(repository.html_url)}"><img align="absmiddle" width="28" height="28" src="${htmlEscape(avatarUrl)}" alt="${htmlEscape(repository.owner.login)} avatar" /></a>&nbsp;`;
 }
 
+function projectLogo(repository, logo, darkLogo) {
+  if (!logo) return "";
+  const image = `<img align="absmiddle" width="28" height="28" src="${htmlEscape(logo)}" alt="${htmlEscape(repository.full_name)} logo" />`;
+  const content = darkLogo
+    ? `<picture><source media="(prefers-color-scheme: dark)" srcset="${htmlEscape(darkLogo)}" />${image}</picture>`
+    : image;
+  return `<a href="${htmlEscape(repository.html_url)}">${content}</a>&nbsp;`;
+}
+
 function renderProfileSummary(
   contributedStars,
   ownedStars,
@@ -697,25 +710,18 @@ function renderOpenSource(entries, ownedRepositories, minimumStarsToShow, copy) 
         return false;
       }
       return true;
-    })
-    .sort(
-      (left, right) =>
-        right.data.stargazers_count - left.data.stargazers_count ||
-        left.data.full_name.localeCompare(right.data.full_name),
-    );
+    });
 
   if (!selected.length) return "";
 
-  const cells = selected.map(({ data, description: configuredDescription }) => {
+  const cells = selected.map(({ data, description: configuredDescription, logo, darkLogo }) => {
     const description = configuredDescription || data.description || copy.projectDescription;
-    const language = data.language ? `<code>${htmlEscape(data.language)}</code>` : "";
     return [
       `<td width="${selected.length === 1 ? "100" : "50"}%" valign="top">`,
       data.stargazers_count >= minimumStarsToShow ? `  ${starsBadge(data, "right")}` : "",
-      `  <strong><a href="${htmlEscape(data.html_url)}">${htmlEscape(data.full_name)}</a></strong>`,
+      `  ${projectLogo(data, logo, darkLogo)}<strong><a href="${htmlEscape(data.html_url)}">${htmlEscape(data.full_name)}</a></strong>`,
       "  <br />",
       `  ${htmlEscape(description)}`,
-      language ? `  <br /><br /><sub>${language}</sub>` : "",
       "</td>",
     ]
       .filter(Boolean)
@@ -1015,6 +1021,8 @@ export function renderProfilePages({ template, config, sourcesByLocale, ownedRep
         .map((entry) => ({
           ...entry,
           description: projectTranslations.get(entry.repository.toLowerCase()).description,
+          logo: projectTranslations.get(entry.repository.toLowerCase()).logo || entry.logo,
+          darkLogo: projectTranslations.get(entry.repository.toLowerCase()).darkLogo || entry.darkLogo,
         }));
       localizedContributions = translateContributions(
         contributions,

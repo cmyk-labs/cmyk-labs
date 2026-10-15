@@ -1,0 +1,4 @@
+| Repository | Featured | Description | Logo | Dark Logo |
+|---|:---:|---|---|---|
+| cmyk-labs/web2harness | true | Use ChatGPT web models, including Pro when available to your account, in Codex with native tool calls, task context, streaming, and image inputs, plus an experimental option to triple the context budget. Web-model requests use ChatGPT web limits without consuming Codex quota; the default Native Tools mode requires no MCP connector or tunnel. | https://raw.githubusercontent.com/cmyk-labs/web2harness/main/assets/brand/icon.png | |
+| cmyk-labs/hands-on-computing | true | A hands-on computing tutorial built around Jupyter Notebooks, connecting principles, code experiments, and projects on a path from programming fundamentals to AI engineering. | https://raw.githubusercontent.com/cmyk-labs/hands-on-computing/main/docs/assets/logo-en-light.png | https://raw.githubusercontent.com/cmyk-labs/hands-on-computing/main/docs/assets/logo-en-dark.png |

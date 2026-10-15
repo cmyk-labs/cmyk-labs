@@ -53,7 +53,7 @@ node scripts/update-profile.mjs --check
 
 ## About Me / 关于我
 
-分别编辑 `sections/en/about.md` 和 `sections/zh-CN/about.md`，直接填写 Markdown 正文，不重复写模块标题。保留院系信息，并单独列出 AI Agent、LLM 基础设施和 AI 算法的研究方向。
+分别编辑 `sections/en/about.md` 和 `sections/zh-CN/about.md`，直接填写 Markdown 正文，不重复写模块标题。保留院系信息，并单独列出 AI 智能体、AI 原生应用与 AI 算法的研究方向。
 
 某个语言的文件为空或仅含 HTML 注释时，只隐藏该语言的模块，不影响另一种语言。
 
@@ -62,22 +62,24 @@ node scripts/update-profile.mjs --check
 英文 `sections/en/open-source.md` 决定项目选择：
 
 ```md
-| Repository | Featured | Description |
-|---|:---:|---|
-| cmyk-labs/example-project | true | Optional English description |
+| Repository | Featured | Description | Logo | Dark Logo |
+|---|:---:|---|---|---|
+| cmyk-labs/example-project | true | Optional English description | https://example.com/logo.png | https://example.com/logo-dark.png |
 ```
 
 中文 `sections/zh-CN/open-source.md` 只提供译文：
 
 ```md
-| Repository | Description |
-|---|---|
-| cmyk-labs/example-project | 中文项目简介 |
+| Repository | Description | Logo | Dark Logo |
+|---|---|---|---|
+| cmyk-labs/example-project | 中文项目简介 | | |
 ```
 
 - 只有英文主配置中 `Featured` 为 `true` 的项目可以展示，项目须是本人拥有的公开非 fork 仓库。
-- 项目按 Stars 从高到低排序；低于配置门槛时只隐藏 Stars 徽章，不隐藏项目，当前门槛为 `200`。
+- 项目按英文表格的行顺序展示；将需要置顶的项目移到表格前面，中文沿用同一顺序。Stars 变化不影响置顶顺序；低于配置门槛时只隐藏 Stars 徽章，不隐藏项目，当前门槛为 `200`。
 - 英文简介留空时使用 GitHub 仓库简介。中文只展示主配置已精选且有中文简介的项目，中文表格不能独立增加精选项目。
+- `Logo`、`Dark Logo` 为可选列，引用项目仓库自己的 Logo；名称前以 28 × 28 显示，深色主题优先使用 `Dark Logo`，未配置 `Logo` 时不显示图标，不使用仓库所有者头像代替。中文可以指定本地化 Logo，留空时分别沿用英文配置。
+- 卡片保留项目名称、Logo、简介及符合门槛的 Stars 徽章，不展示编程语言或技术栈标签。
 - 中文文件为空或没有符合条件的译文时，隐藏中文开源项目模块。
 - 仓库名称重复会终止生成。主配置中不可用、非公开或 fork 项目会输出提示并跳过。
 
